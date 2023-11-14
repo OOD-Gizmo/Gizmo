@@ -1,4 +1,4 @@
-package DTO;
+package application.DTO;
 
 enum USER_TYPE{
 	ADMIN,

@@ -1,4 +1,4 @@
-package DTO;
+package application.DTO;
 
 public class Buyer extends User {
 	public Buyer(String firstName, String lastName, String userID, String emailID, ContactDetails contactDetails) {
