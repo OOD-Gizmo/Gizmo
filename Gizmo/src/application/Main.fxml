@@ -42,7 +42,7 @@
                   <Font size="20.0" />
                </font>
             </TextField>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <TextField id="password" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
@@ -50,7 +50,7 @@
                   <Font size="20.0" />
                </font>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="168.0" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button fx:id="login" mnemonicParsing="false" prefHeight="25.0" prefWidth="168.0" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
          <VBox.margin>
             <Insets bottom="100.0" left="200.0" right="200.0" top="100.0" />
