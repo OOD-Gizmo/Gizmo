@@ -30,6 +30,12 @@ public final class DBConnection {
 		}
 	}
 	
+	public static void closeConnection() {
+		if(isConnected) {
+			mongoClient.close();
+		}
+	}
+	
 	public static boolean isConnected() {
 		return isConnected;
 	}
