@@ -1,9 +1,11 @@
 package application;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import application.DTO.AuthHandler;
-
+import application.DTO.CurrentUser;
+import application.Seller.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,10 +26,18 @@ public class Main extends Application {
 	PasswordField passwordText;
 	Text errorText;
 	ToggleButton loginBtn;
-		
+	
+	SellerMainUI sellerMainUI;
+	Stage stage;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			
+			stage = primaryStage;
+			
+			sellerMainUI = new SellerMainUI();
+			
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			
 			DBConnection.initClient();
@@ -41,7 +51,12 @@ public class Main extends Application {
 			
 			Scene scene = new Scene(root,1280,720);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			
 			primaryStage.setScene(scene);
+//			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); for testing a scene directly
+//			setSceneForTesting(sellerMainUI.getScene());
+			
+			
 			primaryStage.show();		
 			primaryStage.setResizable(false);
 		} catch(Exception e) {
@@ -70,8 +85,12 @@ public class Main extends Application {
 			Document doc = DBConnection.getCollection("Users").find(eq("user_id", userId)).first();
 			if(doc != null) {
 				if(doc.get("password").equals(hashedPassword)) {
-					System.out.println("Login Successfull");
+					CurrentUser.setUserId(doc.getObjectId("_id"));
+					System.out.println(doc);
 					errorText.setText("");
+					
+//					stage.setScene(sellerMainUI.getScene()); TODO: Add user type check					
+					
 				} else {
 					System.out.println("Incorrect Password");
 					errorText.setText("The password is incorrect");
@@ -81,6 +100,10 @@ public class Main extends Application {
 				errorText.setText("This user id does not exist");
 			}
 		}
+	}
+	
+	public void setSceneForTesting(Scene scene) {
+		stage.setScene(scene);
 	}
 	
 	public static void main(String[] args) {
