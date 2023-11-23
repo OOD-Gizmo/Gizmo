@@ -18,8 +18,9 @@
             <Font name="Avenir Roman" size="30.0" />
          </font>
       </Label>
-      <ToggleButton id="loginBtn" layoutX="589.0" layoutY="585.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #000000;" text="Login" textAlignment="CENTER" textFill="WHITE" />
+      <ToggleButton id="loginBtn" layoutX="590.0" layoutY="585.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #000000;" text="Login" textAlignment="CENTER" textFill="WHITE" />
       <Text id="errorText" fill="RED" layoutX="481.0" layoutY="425.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="317.9999694824219" />
       <PasswordField id="passwordText" layoutX="503.0" layoutY="502.0" prefWidth="274.0" promptText="Password" />
+      <ToggleButton id="signUpButton" layoutX="590.0" layoutY="645.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="97.0" text="Sign Up" />
    </children>
 </AnchorPane>

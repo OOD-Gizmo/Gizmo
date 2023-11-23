@@ -20,12 +20,15 @@ import javafx.scene.text.Text;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.io.IOException;
+
 public class Main extends Application {
 	
 	TextField useridText;
 	PasswordField passwordText;
 	Text errorText;
 	ToggleButton loginBtn;
+	ToggleButton signUpButton;
 	
 	SellerMainUI sellerMainUI;
 	Stage stage;
@@ -46,8 +49,10 @@ public class Main extends Application {
 			passwordText = (PasswordField) root.lookup("#passwordText");
 			errorText = (Text) root.lookup("#errorText");
 			loginBtn = (ToggleButton) root.lookup("#loginBtn");
+			signUpButton = (ToggleButton) root.lookup("#signUpButton");
 			
 			loginBtn.setOnAction(new LoginHandler());
+			signUpButton.setOnAction(new RedirectToSignup());
 			
 			Scene scene = new Scene(root,1280,720);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -99,6 +104,20 @@ public class Main extends Application {
 				System.out.println("No doc found for user: " + userId + " and pass: " + password);
 				errorText.setText("This user id does not exist");
 			}
+		}
+	}
+	
+	class RedirectToSignup implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent evento) {
+			Parent root = null;
+			try {
+				root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Scene scene = new Scene(root, 1280, 720);
+			stage.setScene(scene);
 		}
 	}
 	

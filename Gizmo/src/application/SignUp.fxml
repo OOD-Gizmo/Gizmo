@@ -32,5 +32,6 @@
             <Font size="13.0" />
          </font>
       </Text>
+      <ToggleButton id="backToSignInButton" layoutX="29.0" layoutY="31.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="124.0" style="-fx-background-color: #000000; -fx-border-color: #00AAFF; -fx-border-width: 2;" text="Back to sign In" textFill="WHITE" />
    </children>
 </AnchorPane>
