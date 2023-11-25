@@ -24,18 +24,13 @@
    <center>
       <HBox alignment="TOP_CENTER" spacing="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-width: 1px; -fx-border-style: solid;">
+            <VBox id="currentProductVBox" prefHeight="200.0" prefWidth="100.0" style="-fx-border-width: 1px; -fx-border-style: solid;">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Products">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <VBox id="productVBox" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </VBox>
                </children>
                <HBox.margin>
                   <Insets bottom="100.0" />
@@ -97,4 +92,7 @@
          </children>
       </HBox>
    </center>
+   <right>
+      <VBox maxHeight="500.0" minHeight="0.0" prefHeight="500.0" spacing="5.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>
