@@ -16,14 +16,23 @@ import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 
 import application.DBConnection;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -61,9 +70,17 @@ public class SellerMainUI {
 			productComboBox = (ComboBox<String>) root.lookup("#productComboBox");
 			stockTextField = (TextField) root.lookup("#stockTextField");
 			priceTextField = (TextField) root.lookup("#priceTextField");
-			productVBox = (VBox) root.lookup("#productVBox");
+//			productVBox = (VBox) root.lookup("#productVBox");
+//			ScrollBar scrollBar = (ScrollBar) root.lookup("#scrollBar");
 			
+			VBox currentProductVBox = (VBox) root.lookup("#currentProductVBox");
+			ScrollPane sp = new ScrollPane();
+			currentProductVBox.getChildren().add(sp);
+			productVBox = new VBox();
+			sp.setContent(productVBox);
+			sp.minWidthProperty().bind(productVBox.widthProperty().add(20));
 			
+			System.out.print(productVBox);
 			
 			allProducts = Product.PRODUCT_INFO.values();
 			String[] allProductNames = new String[allProducts.length];
@@ -207,7 +224,7 @@ public class SellerMainUI {
 					if((int)inventoryList.get(i).get("id") == product.getProductId().getId() && (int)inventoryList.get(i).get("price") == product.getPrice()) {
 						productFound = true;
 						
-						Bson filter = and(eq("sellerId", CurrentUser.getUserId()), eq("inventory.id", product.getProductId().getId()));
+						Bson filter = and(eq("sellerId", CurrentUser.getUserId()), and(eq("inventory.id", product.getProductId().getId()), eq("inventory.price", product.getPrice())));
 						Bson update = Updates.inc("inventory.$.stock", product.getStock());
 						
 						UpdateResult result = DBConnection.getCollection("Inventory").updateOne(filter, update);

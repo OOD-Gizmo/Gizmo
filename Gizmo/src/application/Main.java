@@ -3,6 +3,7 @@ package application;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import application.Customer.CustomerMainUI;
 import application.DTO.AuthHandler;
 import application.DTO.CurrentUser;
 import application.Seller.*;
@@ -28,6 +29,7 @@ public class Main extends Application {
 	ToggleButton loginBtn;
 	
 	SellerMainUI sellerMainUI;
+	CustomerMainUI customerMainUI;
 	Stage stage;
 	
 	@Override
@@ -37,6 +39,7 @@ public class Main extends Application {
 			stage = primaryStage;
 			
 			sellerMainUI = new SellerMainUI();
+			customerMainUI = new CustomerMainUI();
 			
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			
@@ -53,7 +56,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			primaryStage.setScene(scene);
-//			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); for testing a scene directly
+//			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); //for testing a scene directly
 //			setSceneForTesting(sellerMainUI.getScene());
 			
 			
