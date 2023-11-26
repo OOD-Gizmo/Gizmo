@@ -16,6 +16,7 @@ import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 
 import application.DBConnection;
+import application.Main;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -49,12 +50,13 @@ import static com.mongodb.client.model.Filters.and;
 
 public class SellerMainUI {
 	
-	Stage primaryStage;
 	ComboBox<String> productComboBox;
 	TextField stockTextField;
 	TextField priceTextField;
 	Product.PRODUCT_INFO[] allProducts;
 	VBox productVBox;
+	Button logoutBtn;
+	ScrollPane sp;
 	
 	public Scene getScene() {
 		Scene s = null;
@@ -70,18 +72,19 @@ public class SellerMainUI {
 			productComboBox = (ComboBox<String>) root.lookup("#productComboBox");
 			stockTextField = (TextField) root.lookup("#stockTextField");
 			priceTextField = (TextField) root.lookup("#priceTextField");
-//			productVBox = (VBox) root.lookup("#productVBox");
-//			ScrollBar scrollBar = (ScrollBar) root.lookup("#scrollBar");
+			logoutBtn = (Button) root.lookup("#logoutBtn");
+
 			
 			VBox currentProductVBox = (VBox) root.lookup("#currentProductVBox");
-			ScrollPane sp = new ScrollPane();
+			sp = new ScrollPane();
 			currentProductVBox.getChildren().add(sp);
 			productVBox = new VBox();
 			sp.setContent(productVBox);
 			sp.minWidthProperty().bind(productVBox.widthProperty().add(20));
+			sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 			
-			System.out.print(productVBox);
-			
+			sp.setVisible(false);
+						
 			allProducts = Product.PRODUCT_INFO.values();
 			String[] allProductNames = new String[allProducts.length];
 			
@@ -90,6 +93,10 @@ public class SellerMainUI {
 			}
 			
 			productComboBox.getItems().addAll(allProductNames);
+			
+			logoutBtn.setOnAction(event -> {
+				Main.logout();
+			});
 			
 			addBtn.setOnAction(new AddHandler());
 			renderProducts();
@@ -136,6 +143,11 @@ public class SellerMainUI {
 		Document inventoryDoc = DBConnection.getCollection("Inventory").find(eq("sellerId", CurrentUser.getUserId())).first();
 		productVBox.getChildren().clear();
 		List<Document> inventoryList = inventoryDoc.getList("inventory", Document.class);
+		
+		if(inventoryList.size() > 0) {
+			sp.setVisible(true);
+		}
+		
 		for(int i = 0; i < inventoryList.size(); i++) {
 			int productId = (int)inventoryList.get(i).get("id");
 			Product.PRODUCT_INFO productInfo = null;
@@ -237,6 +249,7 @@ public class SellerMainUI {
 				if(!productFound) {
 					
 					JSONObject productJson = new JSONObject(); 
+					productJson.put("_id", new ObjectId());
 					productJson.put("id", product.getProductId().getId());
 					productJson.put("stock", product.getStock());
 					productJson.put("price", product.getPrice());
@@ -252,6 +265,7 @@ public class SellerMainUI {
 				
 			} else {
 				JSONObject productJson = new JSONObject(); 
+				productJson.put("_id", new ObjectId());
 				productJson.put("id", product.getProductId().getId());
 				productJson.put("stock", product.getStock());
 				productJson.put("price", product.getPrice());
