@@ -109,14 +109,7 @@ public class Main extends Application {
 	
 	class RedirectToSignup implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent evento) {
-			Parent root = null;
-			try {
-				root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Scene scene = new Scene(root, 1280, 720);
+			Scene scene = (new SignUp()).getScene();
 			stage.setScene(scene);
 		}
 	}

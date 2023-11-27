@@ -2,16 +2,21 @@ package application;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import java.awt.Button;
 
 import org.bson.Document;
 
+import application.DTO.AdminUser;
+import application.DTO.Seller;
+import application.DTO.Buyer;
 import application.DTO.CurrentUser;
+import application.DTO.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.text.Text;
@@ -26,14 +31,17 @@ public class SignUp {
 	TextField passwordText;
 	TextField confirmPasswordText;
 	Text errorText;	
+	ComboBox<String> userType;
 	
+	@SuppressWarnings("unchecked")
 	public Scene getScene() {
 		Scene scene = null;		
 		try {
 			Parent rootParent = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
 			Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
-			if(doc == null)
-				return scene; 
+//			if(doc == null)
+//				return scene;
+		
 			this.backToSignInButton = (ToggleButton) rootParent.lookup("#backToSignInButton");
 			this.signupBtn = (ToggleButton) rootParent.lookup("#signupBtn");
 
@@ -42,19 +50,25 @@ public class SignUp {
 			this.emailText = (TextField) rootParent.lookup("#emailText");
 			this.userText = (TextField) rootParent.lookup("#userText");
 			this.emailText = (TextField) rootParent.lookup("#emailText");
-			this.passwordText = (TextField) rootParent.lookup("passwordText");
-			this.passwordText = (TextField) rootParent.lookup("confirmPasswordText");
+			this.passwordText = (PasswordField) rootParent.lookup("#passwordText");
+			this.passwordText = (PasswordField) rootParent.lookup("#confirmPasswordText");
 			this.errorText = (Text) rootParent.lookup("#errorText");
+			this.userType = (ComboBox<String>) rootParent.lookup("#typeComboBox");
 			
-			if(this.firstNameText.getText().toString() == "" || this.lastNameText.getText().toString() == "" || 
-					this.emailText.getText().toString() == "" || this.passwordText.getText().toString() == "" || this.confirmPasswordText.getText().toString() == "" )
-				this.errorText.setText("All fields must have some value"); 
 			
-				
-
+			this.signupBtn.setOnAction(new SignUpHandler());
+			this.backToSignInButton.setOnAction(new BackToHomeBtnHAndler());
+			this.userType.getItems().addAll(
+					"Admin",
+					"Buyer",
+					"Seller"
+					);
+			
+			scene = new Scene(rootParent, 1280, 720);
 			
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return scene;
 	}
@@ -64,7 +78,53 @@ public class SignUp {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
+			// add from class for home that @parichay is working on
+			errorText.setText("Going Back");
+		} 
+		
+	}
+	
+	class SignUpHandler implements EventHandler<ActionEvent>{
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			// TODO Auto-generated method stub
 			
+			// empty fields check
+			if(firstNameText.getText().toString() == "" || lastNameText.getText().toString() == "" || 
+					emailText.getText().toString() == "" || passwordText.getText().toString() == "" || confirmPasswordText.getText().toString()== "" ) {
+				errorText.setText("All fields must have some value");
+				return;
+			}
+			
+			// user type selection check
+			if(userType.getValue() == null || userType.getValue() == "" || userType.getValue().isEmpty()) {
+				errorText.setText("Please select a user type");
+				return;
+			}
+			
+			// password check
+			if(passwordText.getText().toString() != confirmPasswordText.getText().toString()) {
+				errorText.setText("Passwords do not match");
+				return;
+			}
+			
+			// depending upon user Create the user type variable
+			User newUser = null;
+			if(userType.getValue() == "Admin") {
+				newUser = (AdminUser) new AdminUser(firstNameText.getText().toString(), lastNameText.getText().toString(), null, emailText.getText().toString(), null);
+			}else if(userType.getValue() == "Seller") {
+				newUser = (Seller) new Seller(firstNameText.getText().toString(), lastNameText.getText().toString(), null, emailText.getText().toString(), null);
+			}else {
+				newUser = (Buyer) new Buyer(firstNameText.getText().toString(), lastNameText.getText().toString(), null, emailText.getText().toString(), null);
+			}
+			
+			try {
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
 		}
 		
 	}
