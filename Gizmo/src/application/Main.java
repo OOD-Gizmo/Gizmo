@@ -139,11 +139,6 @@ public class Main extends Application {
 		mainstage.setScene(customerMainUI.getScene());
 	}
 	
-	public static void setCustomerMainScene() {
-		customerMainUI = new CustomerMainUI();
-		mainstage.setScene(customerMainUI.getScene());
-	}
-	
 	public static void setCustomerSearchScene() {
 		customerSearchResultUI = new CustomerSearchResultUI();
 		mainstage.setScene(customerSearchResultUI.getScene());
