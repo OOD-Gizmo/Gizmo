@@ -33,6 +33,7 @@ public class Main extends Application {
 	PasswordField passwordText;
 	Text errorText;
 	ToggleButton loginBtn;
+	ToggleButton signUpButton;
 	
 	static SellerMainUI sellerMainUI;
 	static CustomerMainUI customerMainUI;
@@ -62,8 +63,10 @@ public class Main extends Application {
 			passwordText = (PasswordField) root.lookup("#passwordText");
 			errorText = (Text) root.lookup("#errorText");
 			loginBtn = (ToggleButton) root.lookup("#loginBtn");
+			signUpButton = (ToggleButton) root.lookup("#signUpButton");
 			
 			loginBtn.setOnAction(new LoginHandler());
+			signUpButton.setOnAction(new RedirectToSignup());
 			
 			mainScene = new Scene(root,1280,720);
 			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -120,10 +123,17 @@ public class Main extends Application {
 		}
 	}
 	
+	class RedirectToSignup implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent evento) {
+			Scene scene = (new SignUp()).getScene();
+			mainstage.setScene(scene);
+		}
+	}
+	
 	public static void setScene(Scene scene) {
 		mainstage.setScene(scene);
 	}
-	
+
 	public static void setCustomerMainScene() {
 		customerMainUI = new CustomerMainUI();
 		mainstage.setScene(customerMainUI.getScene());
