@@ -4,8 +4,10 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import application.Customer.CustomerMainUI;
+import application.Customer.CustomerProductUI;
 import application.Customer.CustomerSearchResultUI;
 import application.DTO.AuthHandler;
+import application.DTO.CurrentProduct;
 import application.DTO.CurrentUser;
 import application.DTO.Product;
 import application.Seller.*;
@@ -35,6 +37,7 @@ public class Main extends Application {
 	static SellerMainUI sellerMainUI;
 	static CustomerMainUI customerMainUI;
 	static CustomerSearchResultUI customerSearchResultUI;
+	static CustomerProductUI customerProductUI;
 	
 	
 	static Scene mainScene;
@@ -49,6 +52,7 @@ public class Main extends Application {
 			sellerMainUI = new SellerMainUI();
 			customerMainUI = new CustomerMainUI();
 			customerSearchResultUI = new CustomerSearchResultUI();
+			customerProductUI = new CustomerProductUI();
 			
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			
@@ -67,7 +71,8 @@ public class Main extends Application {
 			primaryStage.setScene(mainScene);
 //			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); //for testing a scene directly
 //			CustomerSearchResultUI.setSearchedProduct(Product.PRODUCT_INFO.IPHONE12);
-//			setScene(customerSearchResultUI.getScene());
+//			CurrentProduct.setProduct(new ObjectId("6565330bd48aba50fa520eb7"));
+//			setScene(customerMainUI.getScene());
 			
 			
 			primaryStage.show();		
@@ -127,6 +132,11 @@ public class Main extends Application {
 	public static void setCustomerSearchScene() {
 		customerSearchResultUI = new CustomerSearchResultUI();
 		mainstage.setScene(customerSearchResultUI.getScene());
+	}
+	
+	public static void setCustomerProductScene() {
+		customerProductUI = new CustomerProductUI();
+		mainstage.setScene(customerProductUI.getScene());
 	}
 	
 	public static void logout() {

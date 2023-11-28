@@ -14,6 +14,7 @@ public class Product {
 			this.id = id;
 			this.name = name;
 			this.imagePath = imagePath;
+			this.specifications = specifications;
 		}
 		
 		public int getId() {
@@ -45,12 +46,23 @@ public class Product {
 			this.rating = 0;
 	}
 	
-	public PRODUCT_INFO getProductId() { // can access id, name, image, specifications
+	public Product(PRODUCT_INFO productInfo, int price, int stock, double rating) {
+		this.productInfo = productInfo;
+		this.price = price;
+		this.stock = stock;
+		this.rating = rating;
+}
+	
+	public PRODUCT_INFO getProductInfo() { // can access id, name, image, specifications
 		return this.productInfo;
 	}
 
 	public int getStock() {
 		return this.stock;
+	}
+	
+	public int setStock(int stock) {
+		return this.stock = stock;
 	}
 
 	public int getPrice() {
