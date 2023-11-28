@@ -1,0 +1,9 @@
+#productCard {
+	-fx-border-width: 1px;
+	-fx-border-style: solid;
+	-fx-padding: 5px;
+}
+
+.suggestionText:hover {
+	-fx-background-color: green;
+}

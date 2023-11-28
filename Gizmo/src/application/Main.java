@@ -3,8 +3,11 @@ package application;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import application.Customer.CustomerMainUI;
+import application.Customer.CustomerSearchResultUI;
 import application.DTO.AuthHandler;
 import application.DTO.CurrentUser;
+import application.DTO.Product;
 import application.Seller.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -30,16 +33,23 @@ public class Main extends Application {
 	ToggleButton loginBtn;
 	ToggleButton signUpButton;
 	
-	SellerMainUI sellerMainUI;
-	Stage stage;
+	static SellerMainUI sellerMainUI;
+	static CustomerMainUI customerMainUI;
+	static CustomerSearchResultUI customerSearchResultUI;
+	
+	
+	static Scene mainScene;
+	static Stage mainstage;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			
-			stage = primaryStage;
+			mainstage = primaryStage;
 			
 			sellerMainUI = new SellerMainUI();
+			customerMainUI = new CustomerMainUI();
+			customerSearchResultUI = new CustomerSearchResultUI();
 			
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			
@@ -54,12 +64,13 @@ public class Main extends Application {
 			loginBtn.setOnAction(new LoginHandler());
 			signUpButton.setOnAction(new RedirectToSignup());
 			
-			Scene scene = new Scene(root,1280,720);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			mainScene = new Scene(root,1280,720);
+			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
-			primaryStage.setScene(scene);
-//			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); for testing a scene directly
-//			setSceneForTesting(sellerMainUI.getScene());
+			primaryStage.setScene(mainScene);
+//			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); //for testing a scene directly
+//			CustomerSearchResultUI.setSearchedProduct(Product.PRODUCT_INFO.IPHONE12);
+//			setScene(customerSearchResultUI.getScene());
 			
 			
 			primaryStage.show();		
@@ -116,6 +127,29 @@ public class Main extends Application {
 	
 	public void setSceneForTesting(Scene scene) {
 		stage.setScene(scene);
+	public static void setScene(Scene scene) {
+		mainstage.setScene(scene);
+	}
+	
+	public static void setCustomerMainScene() {
+		customerMainUI = new CustomerMainUI();
+		mainstage.setScene(customerMainUI.getScene());
+	}
+	
+	public static void setCustomerSearchScene() {
+		customerSearchResultUI = new CustomerSearchResultUI();
+		mainstage.setScene(customerSearchResultUI.getScene());
+	}
+	
+	public static void logout() {
+		try {
+			Parent root = FXMLLoader.load(Main.class.getResource("Login.fxml"));
+			CurrentUser.setUserId(null);
+			mainstage.setScene(mainScene);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {

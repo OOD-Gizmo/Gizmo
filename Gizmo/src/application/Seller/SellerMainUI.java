@@ -16,14 +16,24 @@ import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 
 import application.DBConnection;
+import application.Main;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,12 +50,13 @@ import static com.mongodb.client.model.Filters.and;
 
 public class SellerMainUI {
 	
-	Stage primaryStage;
 	ComboBox<String> productComboBox;
 	TextField stockTextField;
 	TextField priceTextField;
 	Product.PRODUCT_INFO[] allProducts;
 	VBox productVBox;
+	Button logoutBtn;
+	ScrollPane sp;
 	
 	public Scene getScene() {
 		Scene s = null;
@@ -61,10 +72,19 @@ public class SellerMainUI {
 			productComboBox = (ComboBox<String>) root.lookup("#productComboBox");
 			stockTextField = (TextField) root.lookup("#stockTextField");
 			priceTextField = (TextField) root.lookup("#priceTextField");
-			productVBox = (VBox) root.lookup("#productVBox");
+			logoutBtn = (Button) root.lookup("#logoutBtn");
+
 			
+			VBox currentProductVBox = (VBox) root.lookup("#currentProductVBox");
+			sp = new ScrollPane();
+			currentProductVBox.getChildren().add(sp);
+			productVBox = new VBox();
+			sp.setContent(productVBox);
+			sp.minWidthProperty().bind(productVBox.widthProperty().add(20));
+			sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 			
-			
+			sp.setVisible(false);
+						
 			allProducts = Product.PRODUCT_INFO.values();
 			String[] allProductNames = new String[allProducts.length];
 			
@@ -73,6 +93,10 @@ public class SellerMainUI {
 			}
 			
 			productComboBox.getItems().addAll(allProductNames);
+			
+			logoutBtn.setOnAction(event -> {
+				Main.logout();
+			});
 			
 			addBtn.setOnAction(new AddHandler());
 			renderProducts();
@@ -119,6 +143,11 @@ public class SellerMainUI {
 		Document inventoryDoc = DBConnection.getCollection("Inventory").find(eq("sellerId", CurrentUser.getUserId())).first();
 		productVBox.getChildren().clear();
 		List<Document> inventoryList = inventoryDoc.getList("inventory", Document.class);
+		
+		if(inventoryList.size() > 0) {
+			sp.setVisible(true);
+		}
+		
 		for(int i = 0; i < inventoryList.size(); i++) {
 			int productId = (int)inventoryList.get(i).get("id");
 			Product.PRODUCT_INFO productInfo = null;
@@ -207,7 +236,7 @@ public class SellerMainUI {
 					if((int)inventoryList.get(i).get("id") == product.getProductId().getId() && (int)inventoryList.get(i).get("price") == product.getPrice()) {
 						productFound = true;
 						
-						Bson filter = and(eq("sellerId", CurrentUser.getUserId()), eq("inventory.id", product.getProductId().getId()));
+						Bson filter = and(eq("sellerId", CurrentUser.getUserId()), and(eq("inventory.id", product.getProductId().getId()), eq("inventory.price", product.getPrice())));
 						Bson update = Updates.inc("inventory.$.stock", product.getStock());
 						
 						UpdateResult result = DBConnection.getCollection("Inventory").updateOne(filter, update);
@@ -220,6 +249,7 @@ public class SellerMainUI {
 				if(!productFound) {
 					
 					JSONObject productJson = new JSONObject(); 
+					productJson.put("_id", new ObjectId());
 					productJson.put("id", product.getProductId().getId());
 					productJson.put("stock", product.getStock());
 					productJson.put("price", product.getPrice());
@@ -235,6 +265,7 @@ public class SellerMainUI {
 				
 			} else {
 				JSONObject productJson = new JSONObject(); 
+				productJson.put("_id", new ObjectId());
 				productJson.put("id", product.getProductId().getId());
 				productJson.put("stock", product.getStock());
 				productJson.put("price", product.getPrice());

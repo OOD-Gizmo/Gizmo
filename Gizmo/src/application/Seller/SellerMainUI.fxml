@@ -6,36 +6,22 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Products" textAlignment="CENTER" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="36.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets bottom="40.0" />
-         </BorderPane.margin>
-      </Text>
-   </top>
    <center>
       <HBox alignment="TOP_CENTER" spacing="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-width: 1px; -fx-border-style: solid;">
+            <VBox id="currentProductVBox" alignment="TOP_CENTER" prefHeight="200.0" style="-fx-border-width: 1px; -fx-border-style: solid;">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Products">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Products" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <VBox id="productVBox" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </VBox>
                </children>
                <HBox.margin>
                   <Insets bottom="100.0" />
@@ -97,4 +83,26 @@
          </children>
       </HBox>
    </center>
+   <right>
+      <VBox maxHeight="500.0" minHeight="0.0" prefHeight="500.0" spacing="5.0" BorderPane.alignment="CENTER" />
+   </right>
+   <top>
+      <StackPane prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Products" textAlignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <Button id="logoutBtn" mnemonicParsing="false" style="-fx-background-color: coral;" text="Logout" StackPane.alignment="CENTER_RIGHT">
+               <StackPane.margin>
+                  <Insets right="10.0" />
+               </StackPane.margin>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="50.0" />
+         </BorderPane.margin>
+      </StackPane>
+   </top>
 </BorderPane>
