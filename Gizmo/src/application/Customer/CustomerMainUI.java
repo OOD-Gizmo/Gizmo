@@ -20,6 +20,8 @@ import com.mongodb.client.model.Aggregates;
 
 import application.DBConnection;
 import application.Main;
+import application.Customer.CustomerProductUI.RedirectionFrom;
+import application.DTO.CurrentProduct;
 import application.DTO.CurrentUser;
 import application.DTO.Product;
 import javafx.event.ActionEvent;
@@ -76,6 +78,8 @@ public class CustomerMainUI {
 			logoutBtn = (Button) root.lookup("#logoutBtn");
 			searchBtn = (Button) root.lookup("#searchBtn");
 			
+			productGrid.toFront();
+			
 			allProducts = Product.PRODUCT_INFO.values();
 			
 			logoutBtn.setOnAction(e -> {
@@ -89,6 +93,7 @@ public class CustomerMainUI {
 			productSearchText.textProperty().addListener((obs, old, newText) -> {
 				if(newText.isEmpty()) {
 					suggestionGridPane.getChildren().clear();
+					productGrid.toFront();
 				} else {
 					populateSearchSuggestion(newText);
 				}
@@ -177,14 +182,18 @@ public class CustomerMainUI {
 			}
 		}
 		
-		if(suggestionList.size() < 0) {
-			suggestionList.clear();
-		} else {
+		if(suggestionList.size() > 0) {
+			productGrid.toBack();
+
 			int gridIndex = 0;
 			for(String str : suggestionList) {
 				suggestionGridPane.add(createSuggestionLabel(str), 0, gridIndex);
 				gridIndex++;
 			}
+			
+		} else {
+			suggestionGridPane.getChildren().clear();
+			productGrid.toFront();
 		}
 	}
 	
@@ -221,6 +230,11 @@ class ProductCard extends VBox {
 		this.allProducts = Product.PRODUCT_INFO.values();
 		
 		setId("productCard");
+		this.setOnMouseClicked(e -> {
+			CustomerProductUI.setRedirectFrom(RedirectionFrom.MAINPAGE);
+			CurrentProduct.setProduct(this.productObjectId);
+			Main.setCustomerProductScene();
+		});
 		
 		Product.PRODUCT_INFO productInfo = null;
 		

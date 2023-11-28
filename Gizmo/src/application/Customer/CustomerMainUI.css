@@ -4,6 +4,10 @@
 	-fx-padding: 5px;
 }
 
+#productCard:hover {
+	-fx-background-color: lightgrey;
+}
+
 .suggestionText:hover {
 	-fx-background-color: green;
 }

@@ -20,6 +20,8 @@ import com.mongodb.client.model.Sorts;
 
 import application.DBConnection;
 import application.Main;
+import application.Customer.CustomerProductUI.RedirectionFrom;
+import application.DTO.CurrentProduct;
 import application.DTO.CurrentUser;
 import application.DTO.Product;
 import javafx.fxml.FXMLLoader;
@@ -214,6 +216,12 @@ class SearchProductCard extends HBox {
 		this.allProducts = Product.PRODUCT_INFO.values();
 		
 		setId("productCard");
+		
+		this.setOnMouseClicked(e -> {
+			CurrentProduct.setProduct(this.productObjectId);
+			CustomerProductUI.setRedirectFrom(RedirectionFrom.SEARCHPAGE);
+			Main.setCustomerProductScene();
+		});
 		
 		Product.PRODUCT_INFO productInfo = null;
 		
