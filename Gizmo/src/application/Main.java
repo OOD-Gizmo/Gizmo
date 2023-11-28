@@ -121,14 +121,17 @@ public class Main extends Application {
 	class RedirectToSignup implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent evento) {
 			Scene scene = (new SignUp()).getScene();
-			stage.setScene(scene);
+			mainstage.setScene(scene);
 		}
 	}
 	
-	public void setSceneForTesting(Scene scene) {
-		stage.setScene(scene);
 	public static void setScene(Scene scene) {
 		mainstage.setScene(scene);
+	}
+
+	public static void setCustomerMainScene() {
+		customerMainUI = new CustomerMainUI();
+		mainstage.setScene(customerMainUI.getScene());
 	}
 	
 	public static void setCustomerMainScene() {
