@@ -141,6 +141,9 @@ public class SellerMainUI {
 	
 	public void renderProducts() {
 		Document inventoryDoc = DBConnection.getCollection("Inventory").find(eq("sellerId", CurrentUser.getUserId())).first();
+		if(inventoryDoc == null) {
+			return;
+		}
 		productVBox.getChildren().clear();
 		List<Document> inventoryList = inventoryDoc.getList("inventory", Document.class);
 		
@@ -233,10 +236,10 @@ public class SellerMainUI {
 				List<Document> inventoryList = inventoryDoc.getList("inventory", Document.class);
 				boolean productFound = false;
 				for(int i = 0; i < inventoryList.size(); i++) {
-					if((int)inventoryList.get(i).get("id") == product.getProductId().getId() && (int)inventoryList.get(i).get("price") == product.getPrice()) {
+					if((int)inventoryList.get(i).get("id") == product.getProductInfo().getId() && (int)inventoryList.get(i).get("price") == product.getPrice()) {
 						productFound = true;
 						
-						Bson filter = and(eq("sellerId", CurrentUser.getUserId()), and(eq("inventory.id", product.getProductId().getId()), eq("inventory.price", product.getPrice())));
+						Bson filter = and(eq("sellerId", CurrentUser.getUserId()), and(eq("inventory.id", product.getProductInfo().getId()), eq("inventory.price", product.getPrice())));
 						Bson update = Updates.inc("inventory.$.stock", product.getStock());
 						
 						UpdateResult result = DBConnection.getCollection("Inventory").updateOne(filter, update);
@@ -250,7 +253,7 @@ public class SellerMainUI {
 					
 					JSONObject productJson = new JSONObject(); 
 					productJson.put("_id", new ObjectId());
-					productJson.put("id", product.getProductId().getId());
+					productJson.put("id", product.getProductInfo().getId());
 					productJson.put("stock", product.getStock());
 					productJson.put("price", product.getPrice());
 					productJson.put("sold", 0);
@@ -266,7 +269,7 @@ public class SellerMainUI {
 			} else {
 				JSONObject productJson = new JSONObject(); 
 				productJson.put("_id", new ObjectId());
-				productJson.put("id", product.getProductId().getId());
+				productJson.put("id", product.getProductInfo().getId());
 				productJson.put("stock", product.getStock());
 				productJson.put("price", product.getPrice());
 				productJson.put("sold", 0);
