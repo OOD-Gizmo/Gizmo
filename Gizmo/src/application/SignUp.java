@@ -38,7 +38,6 @@ public class SignUp {
 		Scene scene = null;		
 		try {
 			Parent rootParent = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
-			Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
 //			if(doc == null)
 //				return scene;
 		
@@ -120,7 +119,9 @@ public class SignUp {
 			}
 			
 			try {
-				
+				Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
+				if(doc == null)
+					return;
 			}catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();

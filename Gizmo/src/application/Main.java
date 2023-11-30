@@ -126,7 +126,10 @@ public class Main extends Application {
 	class RedirectToSignup implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent evento) {
 			Scene scene = (new SignUp()).getScene();
+<<<<<<< HEAD
 			mainstage.setScene(scene);
+=======
+>>>>>>> 72f74a9 (commiting to merge head)
 		}
 	}
 	
