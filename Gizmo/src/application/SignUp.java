@@ -2,10 +2,16 @@ package application;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.util.Arrays;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.mongodb.MongoWriteException;
+import com.mongodb.client.result.InsertOneResult;
 
 import application.DTO.AdminUser;
+import application.DTO.AuthHandler;
 import application.DTO.Seller;
 import application.DTO.Buyer;
 import application.DTO.CurrentUser;
@@ -32,6 +38,7 @@ public class SignUp {
 	TextField confirmPasswordText;
 	Text errorText;	
 	ComboBox<String> userType;
+	User.USER_TYPE userTypeEnum = User.USER_TYPE.UNDEFINED;
 	
 	@SuppressWarnings("unchecked")
 	public Scene getScene() {
@@ -50,7 +57,7 @@ public class SignUp {
 			this.userText = (TextField) rootParent.lookup("#userText");
 			this.emailText = (TextField) rootParent.lookup("#emailText");
 			this.passwordText = (PasswordField) rootParent.lookup("#passwordText");
-			this.passwordText = (PasswordField) rootParent.lookup("#confirmPasswordText");
+			this.confirmPasswordText = (PasswordField) rootParent.lookup("#confirmPasswordText");
 			this.errorText = (Text) rootParent.lookup("#errorText");
 			this.userType = (ComboBox<String>) rootParent.lookup("#typeComboBox");
 			
@@ -76,9 +83,7 @@ public class SignUp {
 
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
-			// add from class for home that @parichay is working on
-			errorText.setText("Going Back");
+			Main.setLoginScene();
 		} 
 		
 	}
@@ -111,21 +116,29 @@ public class SignUp {
 			// depending upon user Create the user type variable
 			User newUser = null;
 			if(userType.getValue() == "Admin") {
-				newUser = (AdminUser) new AdminUser(firstNameText.getText().toString(), lastNameText.getText().toString(), null, emailText.getText().toString(), null);
+				userTypeEnum = User.USER_TYPE.ADMIN;
+				newUser = (AdminUser) new AdminUser(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}else if(userType.getValue() == "Seller") {
-				newUser = (Seller) new Seller(firstNameText.getText().toString(), lastNameText.getText().toString(), null, emailText.getText().toString(), null);
+				userTypeEnum = User.USER_TYPE.SELLER;
+				newUser = (Seller) new Seller(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}else {
-				newUser = (Buyer) new Buyer(firstNameText.getText().toString(), lastNameText.getText().toString(), null, emailText.getText().toString(), null);
+				userTypeEnum = User.USER_TYPE.BUYER;
+				newUser = (Buyer) new Buyer(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}
-			
+				
 			try {
-				Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
-				if(doc == null)
-					return;
-			}catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+				DBConnection.getCollection("Users").insertOne(new Document()
+                        .append("_id", new ObjectId())
+                        .append("user_id", newUser.getUserID())
+                        .append("password", AuthHandler.getPasswordHash(passwordText.getText()))
+                        .append("first_name", newUser.getFirstName())
+                        .append("last_name", newUser.getLastName())
+                        .append("email_id", newUser.getEmailID())
+                        .append("type", userTypeEnum.getTypeInt())
+						);
+			} catch (MongoWriteException e) {
+				errorText.setText("Username already exists. Please choose another one.");
+			}				
 		}
 		
 	}

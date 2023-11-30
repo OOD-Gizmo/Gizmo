@@ -152,15 +152,13 @@ public class Main extends Application {
 		mainstage.setScene(customerProductUI.getScene());
 	}
 	
+	public static void setLoginScene() {
+		mainstage.setScene(mainScene);
+	}
+	
 	public static void logout() {
-		try {
-			Parent root = FXMLLoader.load(Main.class.getResource("Login.fxml"));
-			CurrentUser.setUserId(null);
-			mainstage.setScene(mainScene);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		CurrentUser.setUserId(null);
+		setLoginScene();
 	}
 	
 	public static void main(String[] args) {
