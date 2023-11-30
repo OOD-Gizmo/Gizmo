@@ -1,12 +1,37 @@
 package application.DTO;
 
-enum USER_TYPE{
-	ADMIN,
-	SELER,
-	BUYER
-}
-
 public abstract class User {
+	
+	public enum USER_TYPE{
+		UNDEFINED (0),
+		ADMIN (1),
+		SELLER (2),
+		BUYER (3);
+		
+		private int typeInt;
+		
+		USER_TYPE(int typeInt) {
+			this.typeInt = typeInt;
+		}
+		
+		public int getTypeInt() {
+			return this.typeInt;
+		}
+		
+		static USER_TYPE getEnumFromTypeInt(int typeInt) {
+			switch(typeInt) {
+				case 1:
+					return USER_TYPE.ADMIN;
+				case 2:
+					return USER_TYPE.SELLER;
+				case 3:
+					return USER_TYPE.BUYER;
+				default:
+					return USER_TYPE.UNDEFINED;
+			}
+		}
+	}
+	
 	private String firstName; 
 	private String lastName;
 	private String userID; 
