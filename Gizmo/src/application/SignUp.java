@@ -38,7 +38,6 @@ public class SignUp {
 	TextField confirmPasswordText;
 	Text errorText;	
 	ComboBox<String> userType;
-	User.USER_TYPE userTypeEnum = User.USER_TYPE.UNDEFINED;
 	
 	@SuppressWarnings("unchecked")
 	public Scene getScene() {
@@ -116,13 +115,10 @@ public class SignUp {
 			// depending upon user Create the user type variable
 			User newUser = null;
 			if(userType.getValue() == "Admin") {
-				userTypeEnum = User.USER_TYPE.ADMIN;
 				newUser = (AdminUser) new AdminUser(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}else if(userType.getValue() == "Seller") {
-				userTypeEnum = User.USER_TYPE.SELLER;
 				newUser = (Seller) new Seller(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}else {
-				userTypeEnum = User.USER_TYPE.BUYER;
 				newUser = (Buyer) new Buyer(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}
 				
@@ -134,7 +130,7 @@ public class SignUp {
                         .append("first_name", newUser.getFirstName())
                         .append("last_name", newUser.getLastName())
                         .append("email_id", newUser.getEmailID())
-                        .append("type", userTypeEnum.getTypeInt())
+                        .append("type", newUser.getUser_TYPE().getTypeInt())
 						);
 			} catch (MongoWriteException e) {
 				errorText.setText("Username already exists. Please choose another one.");

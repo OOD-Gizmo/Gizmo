@@ -1,10 +1,5 @@
 package application.Customer;
 
-import static com.mongodb.client.model.Filters.eq;
-
-import static com.mongodb.client.model.Filters.gt;
-import static com.mongodb.client.model.Aggregates.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +44,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gt;
+import static com.mongodb.client.model.Aggregates.*;
 
 public class CustomerMainUI {
 	
