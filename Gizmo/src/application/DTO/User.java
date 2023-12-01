@@ -18,7 +18,7 @@ public abstract class User {
 			return this.typeInt;
 		}
 		
-		static USER_TYPE getEnumFromTypeInt(int typeInt) {
+		public static USER_TYPE getEnumFromTypeInt(int typeInt) {
 			switch(typeInt) {
 				case 1:
 					return USER_TYPE.ADMIN;

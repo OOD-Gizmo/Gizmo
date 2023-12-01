@@ -1,15 +1,13 @@
 package application;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import application.Customer.CustomerMainUI;
 import application.Customer.CustomerProductUI;
 import application.Customer.CustomerSearchResultUI;
 import application.DTO.AuthHandler;
-import application.DTO.CurrentProduct;
 import application.DTO.CurrentUser;
-import application.DTO.Product;
+import application.DTO.User.USER_TYPE;
 import application.Seller.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -25,12 +23,11 @@ import javafx.scene.text.Text;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import java.io.IOException;
 
 public class Main extends Application {
 	
-	TextField useridText;
-	PasswordField passwordText;
+	static TextField useridText;
+	static PasswordField passwordText;
 	Text errorText;
 	ToggleButton loginBtn;
 	ToggleButton signUpButton;
@@ -110,6 +107,23 @@ public class Main extends Application {
 					System.out.println(doc);
 					errorText.setText("");
 					
+					USER_TYPE userType = USER_TYPE.getEnumFromTypeInt((int)doc.get("type"));
+					switch(userType) {
+						case ADMIN:
+							// TODO: Need to be implemented by Pranay
+							break;
+						
+						case SELLER:
+							setSellerMainScene();
+							break;
+						
+						case BUYER:
+							setCustomerMainScene();
+							break;
+						default:
+							break;
+					}
+					
 //					stage.setScene(sellerMainUI.getScene()); TODO: Add user type check					
 					
 				} else {
@@ -132,6 +146,11 @@ public class Main extends Application {
 	
 	public static void setScene(Scene scene) {
 		mainstage.setScene(scene);
+	}
+	
+	public static void setSellerMainScene() {
+		sellerMainUI = new SellerMainUI();
+		mainstage.setScene(sellerMainUI.getScene());
 	}
 
 	public static void setCustomerMainScene() {
@@ -156,6 +175,8 @@ public class Main extends Application {
 	public static void logout() {
 		CurrentUser.setUserId(null);
 		setLoginScene();
+		useridText.setText("");
+		passwordText.setText("");
 	}
 	
 	public static void main(String[] args) {
