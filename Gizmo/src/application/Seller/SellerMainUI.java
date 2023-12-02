@@ -126,7 +126,7 @@ public class SellerMainUI {
 		Image productImage = new Image(productInfo.getImagePath());
 		ImageView productImageView = new ImageView();
 		productImageView.setImage(productImage);
-		productImageView.setPreserveRatio(true);
+		productImageView.setFitHeight(100);
 		productImageView.setFitWidth(100);
 		
 
