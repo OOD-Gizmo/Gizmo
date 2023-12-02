@@ -2,6 +2,7 @@ package application;
 
 import org.bson.Document;
 
+import application.Admin.AdminMainUI;
 import application.Customer.CustomerMainUI;
 import application.Customer.CustomerProductUI;
 import application.Customer.CustomerSearchResultUI;
@@ -36,7 +37,7 @@ public class Main extends Application {
 	static CustomerMainUI customerMainUI;
 	static CustomerSearchResultUI customerSearchResultUI;
 	static CustomerProductUI customerProductUI;
-	
+	static AdminMainUI adminMainUI;
 	
 	static Scene mainScene;
 	static Stage mainstage;
@@ -110,7 +111,7 @@ public class Main extends Application {
 					USER_TYPE userType = USER_TYPE.getEnumFromTypeInt((int)doc.get("type"));
 					switch(userType) {
 						case ADMIN:
-							// TODO: Need to be implemented by Pranay
+							setAdminMainScene();
 							break;
 						
 						case SELLER:
@@ -120,6 +121,7 @@ public class Main extends Application {
 						case BUYER:
 							setCustomerMainScene();
 							break;
+						
 						default:
 							break;
 					}
@@ -146,6 +148,11 @@ public class Main extends Application {
 	
 	public static void setScene(Scene scene) {
 		mainstage.setScene(scene);
+	}
+	
+	public static void setAdminMainScene() {
+		adminMainUI = new AdminMainUI();
+		mainstage.setScene(adminMainUI.getScene());
 	}
 	
 	public static void setSellerMainScene() {
