@@ -25,6 +25,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 public class SignUp {
@@ -44,7 +45,6 @@ public class SignUp {
 		Scene scene = null;		
 		try {
 			Parent rootParent = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
-			Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
 //			if(doc == null)
 //				return scene;
 		
@@ -95,23 +95,26 @@ public class SignUp {
 			// TODO Auto-generated method stub
 			
 			// empty fields check
-			if(firstNameText.getText().toString() == "" || lastNameText.getText().toString() == "" || 
-					emailText.getText().toString() == "" || passwordText.getText().toString() == "" || confirmPasswordText.getText().toString()== "" ) {
+			if(firstNameText.getText().toString().equals("") || lastNameText.getText().toString().equals("") || 
+					emailText.getText().toString().equals("") || passwordText.getText().toString().equals("") || confirmPasswordText.getText().toString().equals("")) {
+			    errorText.setStyle("-fx-text-fill: red;");
 				errorText.setText("All fields must have some value");
 				return;
 			}
 			
 			// user type selection check
-			if(userType.getValue() == null || userType.getValue() == "" || userType.getValue().isEmpty()) {
+			if(userType.getValue() == null || userType.getValue().equals("") || userType.getValue().isEmpty()) {
+			    errorText.setStyle("-fx-text-fill: red;");
 				errorText.setText("Please select a user type");
 				return;
 			}
 			
 			// password check
-//			if(passwordText.getText().toString() != confirmPasswordText.getText().toString()) {
-//				errorText.setText("Passwords do not match");
-//				return;
-//			}
+			if(!passwordText.getText().toString().equals(confirmPasswordText.getText().toString())) {
+			    errorText.setStyle("-fx-text-fill: red;");
+				errorText.setText("Passwords do not match");
+				return;
+			}
 			
 			// depending upon user Create the user type variable
 			User newUser = null;
@@ -133,6 +136,8 @@ public class SignUp {
                         .append("email_id", newUser.getEmailID())
                         .append("type", newUser.getUser_TYPE().getTypeInt())
 						);
+			    errorText.setFill(Paint.valueOf("green"));
+				errorText.setText("User Account created Successfully");
 			} catch (MongoWriteException e) {
 				errorText.setText("Username already exists. Please choose another one.");
 			}				

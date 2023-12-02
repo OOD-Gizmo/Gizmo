@@ -69,6 +69,7 @@ public class Main extends Application {
 			mainScene = new Scene(root,1280,720);
 			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
+			
 			primaryStage.setScene(mainScene);
 //			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); //for testing a scene directly
 //			CustomerSearchResultUI.setSearchedProduct(Product.PRODUCT_INFO.IPHONE12);

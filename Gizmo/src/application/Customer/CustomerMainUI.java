@@ -246,7 +246,7 @@ class ProductCard extends VBox {
 		
 		Image img = new Image(productInfo.getImagePath());
 		ImageView iv = new ImageView(img);
-		iv.setPreserveRatio(true);
+		iv.setFitHeight(300);
 		iv.setFitWidth(300);
 		
 		HBox content = new HBox();
