@@ -35,10 +35,16 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -78,10 +84,11 @@ public class SellerMainUI {
 			VBox currentProductVBox = (VBox) root.lookup("#currentProductVBox");
 			sp = new ScrollPane();
 			currentProductVBox.getChildren().add(sp);
-			productVBox = new VBox();
+			productVBox = new VBox(25);
 			sp.setContent(productVBox);
 			sp.minWidthProperty().bind(productVBox.widthProperty().add(20));
 			sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+			
 			
 			sp.setVisible(false);
 						
@@ -105,6 +112,7 @@ public class SellerMainUI {
 			
 			s.getStylesheets().add(getClass().getResource("SellerMainUI.css").toExternalForm());
 			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -121,16 +129,31 @@ public class SellerMainUI {
 		productImageView.setPreserveRatio(true);
 		productImageView.setFitWidth(100);
 		
+
+		Text nameText = new Text("NAME : " + productInfo.getName());
+		nameText.setFont(Font.font("Avenir", 15));
+		nameText.setFill(Paint.valueOf("#867d7d"));
 		
-		Text nameText = new Text("Name : " + productInfo.getName());
-		Text priceText = new Text("price : $" + price);
-		Text ratingText = new Text("rating : " + String.format("%.1f", rating));
-		Text stockText = new Text("stock left : " + stock);
-		Text soldText = new Text("sold : " + sold);
+		Text priceText = new Text("PRICE : $" + price);
+		priceText.setFont(Font.font("Avenir", 15));
+		priceText.setFill(Paint.valueOf("#867d7d"));
+
+		Text ratingText = new Text("RATING : " + String.format("%.1f", rating));
+		ratingText.setFont(Font.font("Avenir", 15));
+		ratingText.setFill(Paint.valueOf("#867d7d"));
+
+		Text stockText = new Text("STOCK LEFT : " + stock);
+		stockText.setFont(Font.font("Avenir", 15));
+		stockText.setFill(Paint.valueOf("#867d7d"));
+
+		Text soldText = new Text("SOLD : " + sold);
+		soldText.setFont(Font.font("Avenir", 15));
+		soldText.setFill(Paint.valueOf("#867d7d"));
+
 		
 		productDataBox.getChildren().addAll(nameText, priceText, ratingText, stockText, soldText);
 		
-		HBox productBox = new HBox(5);
+		HBox productBox = new HBox(45);
 		
 		productBox.getChildren().add(productImageView);
 		productBox.getChildren().add(productDataBox);
