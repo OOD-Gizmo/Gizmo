@@ -26,7 +26,7 @@
       <TextField id="firstNameText" layoutX="505.0" layoutY="360.0" prefHeight="26.0" prefWidth="271.0" promptText="First Name" />
       <TextField id="lastNameText" layoutX="505.0" layoutY="400.0" prefHeight="26.0" prefWidth="271.0" promptText="Last Name" />
       <TextField id="emailText" layoutX="505.0" layoutY="440.0" prefHeight="26.0" prefWidth="271.0" promptText="Email" />
-      <ComboBox id="typeComboBox" layoutX="629.0" layoutY="600.0" prefWidth="150.0" promptText="Select" />
+      <ComboBox id="typeComboBox" accessibleText="user_type" layoutX="629.0" layoutY="600.0" prefWidth="150.0" />
       <Text layoutX="505.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Category" textAlignment="CENTER" wrappingWidth="97.33333333333348">
          <font>
             <Font size="13.0" />

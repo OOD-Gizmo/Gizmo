@@ -108,7 +108,7 @@ public class SignUp {
 			}
 			
 			// password check
-			if(passwordText.getText().toString() != confirmPasswordText.getText().toString()) {
+			if(!passwordText.getText().toString().equals(confirmPasswordText.getText().toString())) {
 				errorText.setText("Passwords do not match");
 				return;
 			}
