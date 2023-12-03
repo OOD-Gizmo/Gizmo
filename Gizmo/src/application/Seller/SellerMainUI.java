@@ -57,13 +57,13 @@ import static com.mongodb.client.model.Filters.and;
 
 public class SellerMainUI {
 	
-	ComboBox<String> productComboBox;
-	TextField stockTextField;
-	TextField priceTextField;
-	Product.PRODUCT_INFO[] allProducts;
-	VBox productVBox;
-	Button logoutBtn;
-	ScrollPane sp;
+	private ComboBox<String> productComboBox;
+	private TextField stockTextField;
+	private TextField priceTextField;
+	private Product.PRODUCT_INFO[] allProducts;
+	private VBox productVBox;
+	private Button logoutBtn;
+	private ScrollPane sp;
 	
 	public Scene getScene() {
 		Scene s = null;
@@ -124,7 +124,7 @@ public class SellerMainUI {
 		return s;
 	}
 	
-	public HBox getProduct(Product.PRODUCT_INFO productInfo, int price, double rating, int stock, int sold) {
+	private HBox getProduct(Product.PRODUCT_INFO productInfo, int price, double rating, int stock, int sold) {
 		VBox productDataBox = new VBox(5);
 		
 		Image productImage = new Image(productInfo.getImagePath());
@@ -167,7 +167,7 @@ public class SellerMainUI {
 		return productBox;
 	}
 	
-	public void renderProducts() {
+	private void renderProducts() {
 		Document inventoryDoc = DBConnection.getCollection("Inventory").find(eq("sellerId", CurrentUser.getUserId())).first();
 		if(inventoryDoc == null) {
 			return;

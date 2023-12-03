@@ -47,16 +47,14 @@ import javafx.scene.text.Text;
 
 public class CustomerSearchResultUI {
 	
-	Product.PRODUCT_INFO[] allProducts;
-	ArrayList<ProductCard> allProductCards = new ArrayList<ProductCard>();
-	GridPane productGrid;
-	
-	TextField productSearchText;
-	GridPane suggestionGridPane;
-	Button logoutBtn;
-	Button searchBtn;
-	Button backBtn;
-	ScrollPane sp;
+	private Product.PRODUCT_INFO[] allProducts;
+	private GridPane productGrid;
+	private TextField productSearchText;
+	private GridPane suggestionGridPane;
+	private Button logoutBtn;
+	private Button searchBtn;
+	private Button backBtn;
+	private ScrollPane sp;
 	
 	private static Product.PRODUCT_INFO searchedProduct;
 	
@@ -64,7 +62,6 @@ public class CustomerSearchResultUI {
 		Scene s = null;
 		try {			
 			Parent root = FXMLLoader.load(getClass().getResource("CustomerSearchResultUI.fxml"));
-			Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
 			
 			AggregateIterable<Document> productDocs = DBConnection.getCollection("Inventory")
 					.aggregate(Arrays.asList(
@@ -128,7 +125,7 @@ public class CustomerSearchResultUI {
 		return s;
 	}
 	
-	void populateSearchSuggestion(String searchStr) {
+	private void populateSearchSuggestion(String searchStr) {
 		
 		Pattern pattern = Pattern.compile(searchStr, Pattern.CASE_INSENSITIVE);
 		
@@ -155,7 +152,7 @@ public class CustomerSearchResultUI {
 		}
 	}
 	
-	Label createSuggestionLabel(String text) {
+	private Label createSuggestionLabel(String text) {
 		Label label = new Label(text);
 		label.getStyleClass().add("suggestionText");
 		label.setMaxWidth(Double.MAX_VALUE);
@@ -166,6 +163,7 @@ public class CustomerSearchResultUI {
 		label.setOnMouseClicked(event -> {
 			productSearchText.setText(label.getText());
 			suggestionGridPane.getChildren().clear();
+			sp.toFront();
 		});
 		
 		return label;
@@ -175,7 +173,7 @@ public class CustomerSearchResultUI {
 		searchedProduct = product;
 	}
 	
-	void renderSearchResults(AggregateIterable<Document> productDocs) {
+	private void renderSearchResults(AggregateIterable<Document> productDocs) {
 		
 		ArrayList<SearchProductCard> searchProductCardList = new ArrayList<>();
 		
