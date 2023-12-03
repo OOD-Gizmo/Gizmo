@@ -1,38 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-border-color: #000000; -fx-border-width: 4; -fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField id="userText" layoutX="505.0" layoutY="480.0" prefHeight="26.0" prefWidth="271.0" promptText="Username" />
+      <TextField id="userText" layoutX="505.0" layoutY="480.0" prefHeight="26.0" prefWidth="271.0" promptText="Username" style="-fx-background-color: transparent; -fx-font-weight: bold;" />
+      <HBox layoutX="505.0" layoutY="379.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
       <Circle fill="DODGERBLUE" layoutX="629.0" layoutY="244.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="4.0" />
       <Label layoutX="447.0" layoutY="98.0" prefHeight="37.0" prefWidth="365.0" style="-fx-alignment: center; -fx-background-color: #FFFFFF;" text="GIZMO" textAlignment="CENTER" textFill="#867d7d">
          <font>
             <Font name="Avenir Roman" size="30.0" />
          </font>
       </Label>
-      <ToggleButton id="signupBtn" layoutX="591.0" layoutY="644.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #000000;" text="Sign Up" textAlignment="CENTER" textFill="WHITE" />
+      <ToggleButton id="signupBtn" layoutX="591.0" layoutY="644.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #000000;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ToggleButton>
       <Text id="errorText" fill="RED" layoutX="482.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="317.9999694824219" />
-      <PasswordField id="passwordText" layoutX="505.0" layoutY="520.0" prefWidth="274.0" promptText="Password" />
-      <PasswordField id="confirmPasswordText" layoutX="505.0" layoutY="560.0" prefWidth="274.0" promptText="Confirm Password" />
-      <TextField id="firstNameText" layoutX="505.0" layoutY="360.0" prefHeight="26.0" prefWidth="271.0" promptText="First Name" />
-      <TextField id="lastNameText" layoutX="505.0" layoutY="400.0" prefHeight="26.0" prefWidth="271.0" promptText="Last Name" />
-      <TextField id="emailText" layoutX="505.0" layoutY="440.0" prefHeight="26.0" prefWidth="271.0" promptText="Email" />
-      <ComboBox id="typeComboBox" accessibleText="user_type" layoutX="629.0" layoutY="600.0" prefWidth="150.0" promptText="Select" />
-      <Text layoutX="505.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Category" textAlignment="CENTER" wrappingWidth="97.33333333333348">
+      <PasswordField id="passwordText" layoutX="505.0" layoutY="520.0" prefWidth="274.0" promptText="Password" style="-fx-background-color: transparent; -fx-font-weight: bold;" />
+      <PasswordField id="confirmPasswordText" layoutX="505.0" layoutY="560.0" prefWidth="274.0" promptText="Confirm Password" style="-fx-background-color: transparent; -fx-font-weight: bold;" />
+      <TextField id="firstNameText" layoutX="505.0" layoutY="352.0" prefHeight="26.0" prefWidth="271.0" promptText="First Name" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-border-width: 0 0 2px 0;" />
+      <TextField id="lastNameText" layoutX="505.0" layoutY="400.0" prefHeight="26.0" prefWidth="271.0" promptText="Last Name" style="-fx-background-color: transparent; -fx-font-weight: bold;" />
+      <TextField id="emailText" layoutX="505.0" layoutY="440.0" prefHeight="26.0" prefWidth="271.0" promptText="Email" style="-fx-background-color: transparent; -fx-font-weight: bold;" />
+      <ComboBox id="typeComboBox" accessibleText="user_type" layoutX="629.0" layoutY="600.0" prefWidth="150.0" promptText="Select" style="-fx-background-color: transparent;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ComboBox>
+      <Text fill="#867d7d" layoutX="505.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Category" textAlignment="CENTER" wrappingWidth="97.33333333333348">
          <font>
-            <Font size="13.0" />
+            <Font name="Avenir Roman" size="13.0" />
          </font>
       </Text>
-      <ToggleButton id="backToSignInButton" layoutX="29.0" layoutY="31.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="124.0" style="-fx-background-color: #000000; -fx-border-color: #00AAFF; -fx-border-width: 2;" text="Back to sign In" textFill="WHITE" />
+      <ToggleButton id="backToSignInButton" layoutX="29.0" layoutY="31.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="124.0" style="-fx-background-color: #000000; -fx-border-color: #00AAFF; -fx-border-width: 2;" text="Back to sign In" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ToggleButton>
       <Text id="errorText" fill="#ab1313" layoutX="617.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <HBox layoutX="504.0" layoutY="426.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
+      <HBox layoutX="504.0" layoutY="466.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
+      <HBox layoutX="505.0" layoutY="506.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
+      <HBox layoutX="505.0" layoutY="546.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
+      <HBox layoutX="505.0" layoutY="584.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
    </children>
 </AnchorPane>
