@@ -38,6 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.HBox;
@@ -87,7 +88,10 @@ public class SellerMainUI {
 			productVBox = new VBox(25);
 			sp.setContent(productVBox);
 			sp.minWidthProperty().bind(productVBox.widthProperty().add(20));
-			sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+			sp.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			sp.setBackground(Background.fill(Paint.valueOf("#FFFFFF")));
+			sp.getStyleClass().add("scroll-pane");
+			productVBox.setBackground(Background.fill(Paint.valueOf("#FFFFFF")));
 			
 			
 			sp.setVisible(false);
@@ -158,6 +162,7 @@ public class SellerMainUI {
 		productBox.getChildren().add(productImageView);
 		productBox.getChildren().add(productDataBox);
 		productBox.setId("productBox");
+		productBox.setBackground(Background.fill(Paint.valueOf("#FFFFFF")));
 		
 		return productBox;
 	}
