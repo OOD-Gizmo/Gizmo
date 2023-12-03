@@ -1,11 +1,9 @@
 package application.DTO;
 
-import javax.imageio.ImageIO;
-
 public class Product {
 	
 	public static enum PRODUCT_INFO {
-		IPHONE12 (1, "IPHONE 12", "Images/iphone12.jpg", "RAM-Xgb\nblabla");
+		IPHONE12 (1, "IPHONE 12", "iphone_12.jpg", "RAM-Xgb\nblabla");
 		
 		private int id;
 		private String name;

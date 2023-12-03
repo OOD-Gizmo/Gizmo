@@ -51,19 +51,17 @@ import static com.mongodb.client.model.Aggregates.*;
 
 public class CustomerMainUI {
 	
-	static Product.PRODUCT_INFO[] allProducts;
-	ArrayList<ProductCard> allProductCards = new ArrayList<ProductCard>();
-	GridPane productGrid;
-	
-	static TextField productSearchText;
-	GridPane suggestionGridPane;
-	Button logoutBtn;
-	Button searchBtn;
-	
-	static final int GRID_ROW = 2;
-	static final int GRID_COLUMN = 4;
-	
-	static CustomerSearchResultUI searchResultUI;
+	private static Product.PRODUCT_INFO[] allProducts;
+	private ArrayList<ProductCard> allProductCards = new ArrayList<ProductCard>();
+	private GridPane productGrid;
+
+	private static TextField productSearchText;
+	private GridPane suggestionGridPane;
+	private Button logoutBtn;
+	private Button searchBtn;
+
+	private static final int GRID_ROW = 2;
+	private static final int GRID_COLUMN = 4;
 	
 	public Scene getScene() {
 		Scene s = null;
@@ -151,7 +149,7 @@ public class CustomerMainUI {
 		}
 	}
 	
-	ArrayList<ProductCard> getProductCards(Document invDoc) {
+	private ArrayList<ProductCard> getProductCards(Document invDoc) {
 		List<Document> inventoryList = invDoc.getList("inventory", Document.class);
 		
 		ArrayList<ProductCard> productCards = new ArrayList<>();
@@ -168,7 +166,7 @@ public class CustomerMainUI {
 		return productCards;
 	}
 	
-	void populateSearchSuggestion(String searchStr) {
+	private void populateSearchSuggestion(String searchStr) {
 		
 		Pattern pattern = Pattern.compile(searchStr, Pattern.CASE_INSENSITIVE);
 		
@@ -196,7 +194,7 @@ public class CustomerMainUI {
 		}
 	}
 	
-	Label createSuggestionLabel(String text) {
+	private Label createSuggestionLabel(String text) {
 		Label label = new Label(text);
 		label.getStyleClass().add("suggestionText");
 		label.setMaxWidth(Double.MAX_VALUE);
@@ -207,6 +205,7 @@ public class CustomerMainUI {
 		label.setOnMouseClicked(event -> {
 			productSearchText.setText(label.getText());
 			suggestionGridPane.getChildren().clear();
+			productGrid.toFront();
 		});
 		
 		return label;

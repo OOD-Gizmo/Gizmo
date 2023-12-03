@@ -44,34 +44,34 @@ public class CustomerProductUI {
 		MAINPAGE
 	}
 	
-	Button backBtn;
-	Text productNameText;
-	ImageView productImageView;
-	Text specificationText;
-	Text priceText;
-	Text ratingText;
-	Text leftText;
-	Text sellerNameText;
-	Button purchaseBtn;
-	VBox rateVBox;
-	Text statusText;
-	Text rateStatusText;
-	Button rateBtn1;
-	Button rateBtn2;
-	Button rateBtn3;
-	Button rateBtn4;
-	Button rateBtn5;
-	
-	ObjectId sellerId;
-	Product product;
-	Product.PRODUCT_INFO[] allProducts = Product.PRODUCT_INFO.values();
-	String sellerName;
+	private Button backBtn;
+	private Text productNameText;
+	private ImageView productImageView;
+	private Text specificationText;
+	private Text priceText;
+	private Text ratingText;
+	private Text leftText;
+	private Text sellerNameText;
+	private Button purchaseBtn;
+	private VBox rateVBox;
+	private Text statusText;
+	private Text rateStatusText;
+	private Button rateBtn1;
+	private Button rateBtn2;
+	private Button rateBtn3;
+	private Button rateBtn4;
+	private Button rateBtn5;
+	 
+	private ObjectId sellerId;
+	private Product product;
+	private Product.PRODUCT_INFO[] allProducts = Product.PRODUCT_INFO.values();
+	private String sellerName;
 	private static RedirectionFrom redirectionFrom = RedirectionFrom.MAINPAGE;
-	boolean triedToPurchase = false;
-	boolean isPurchaseSuccessful = true;
-	boolean isPurchasedBefore = false;
-	boolean isRatedBefore = false;
-	boolean isRateSuccessful = true;
+	private boolean triedToPurchase = false;
+	private boolean isPurchaseSuccessful = true;
+	private boolean isPurchasedBefore = false;
+	private boolean isRatedBefore = false;
+	private boolean isRateSuccessful = true;
 	
 	public Scene getScene() {
 		Scene s = null;
@@ -126,7 +126,7 @@ public class CustomerProductUI {
 		return s;
 	}
 	
-	void renderProduct() {
+	private void renderProduct() {
 		AggregateIterable<Document> productDocs = DBConnection.getCollection("Inventory")
 				.aggregate(Arrays.asList(
 						Aggregates.unwind("$inventory"), 
@@ -203,7 +203,7 @@ public class CustomerProductUI {
 		}
 	}
 	
-	void purchase() {
+	private void purchase() {
 		System.out.print("clicked!");
 		triedToPurchase = true;
 		Bson filter = and(eq("sellerId", sellerId), eq("inventory._id", CurrentProduct.getProductId()), gt("inventory.stock", 0));
@@ -237,12 +237,12 @@ public class CustomerProductUI {
 		renderProduct();
 	}
 		
-	boolean isPurchasedBeforeQuery() {
+	private boolean isPurchasedBeforeQuery() {
 		Document purchaseDoc = DBConnection.getCollection("Purchases").find(and(eq("customerId", CurrentUser.getUserId()), eq("purchases.id", CurrentProduct.getProductId()))).first();
 		return purchaseDoc != null;
 	}
 	
-	boolean isRatedBeforeQuery() {
+	private boolean isRatedBeforeQuery() {
 		AggregateIterable<Document> purchaseDocs = DBConnection.getCollection("Purchases")
 				.aggregate(Arrays.asList(
 						Aggregates.match(eq("customerId", CurrentUser.getUserId())),
@@ -259,7 +259,7 @@ public class CustomerProductUI {
 		return false;
 	}
 	
-	void back() {
+	private void back() {
 		if(redirectionFrom == RedirectionFrom.MAINPAGE) {
 			Main.setCustomerMainScene();
 		} else {
@@ -267,7 +267,7 @@ public class CustomerProductUI {
 		}
 	}
 	
-	void rate(String id) {
+	private void rate(String id) {
 		int rating = 0;
 		
 		switch(id) {

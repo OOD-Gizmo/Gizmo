@@ -20,11 +20,11 @@ import static com.mongodb.client.model.Filters.and;
 
 public class AdminMainUI {
 	
-	Button logoutBtn;
-	TextField customerIdTextField;
-	TextField sellerIdTextField;
-	Button removeCustomerBtn;
-	Button removeSellerBtn;
+	private Button logoutBtn;
+	private TextField customerIdTextField;
+	private TextField sellerIdTextField;
+	private Button removeCustomerBtn;
+	private Button removeSellerBtn;
 	
 	public Scene getScene() {
         Parent root;
@@ -62,7 +62,7 @@ public class AdminMainUI {
       
     }
 	
-	void removeCustomer(String id) {
+	private void removeCustomer(String id) {
 		ObjectId userObjectId = DBConnection.getCollection("Users").find(eq("user_id", id)).first().getObjectId("_id");
 
 		if(userObjectId == null) {
@@ -75,7 +75,7 @@ public class AdminMainUI {
 		}
 	}
 	
-	void removeSeller(String id) {
+	private void removeSeller(String id) {
 		ObjectId userObjectId = DBConnection.getCollection("Users").find(eq("user_id", id)).first().getObjectId("_id");
 
 		if(userObjectId == null) {

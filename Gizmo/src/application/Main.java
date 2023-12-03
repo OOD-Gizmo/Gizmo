@@ -27,20 +27,20 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class Main extends Application {
 	
-	static TextField useridText;
-	static PasswordField passwordText;
-	Text errorText;
-	ToggleButton loginBtn;
-	ToggleButton signUpButton;
+	private static TextField useridText;
+	private static PasswordField passwordText;
+	private Text errorText;
+	private ToggleButton loginBtn;
+	private ToggleButton signUpButton;
 	
-	static SellerMainUI sellerMainUI;
-	static CustomerMainUI customerMainUI;
-	static CustomerSearchResultUI customerSearchResultUI;
-	static CustomerProductUI customerProductUI;
-	static AdminMainUI adminMainUI;
+	private static SellerMainUI sellerMainUI;
+	private static CustomerMainUI customerMainUI;
+	private static CustomerSearchResultUI customerSearchResultUI;
+	private static CustomerProductUI customerProductUI;
+	private static AdminMainUI adminMainUI;
 	
-	static Scene mainScene;
-	static Stage mainstage;
+	private static Scene mainScene;
+	private static Stage mainstage;
 	
 	@Override
 	public void start(Stage primaryStage) {
