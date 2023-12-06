@@ -105,7 +105,7 @@ public class Main extends Application {
 			Document doc = DBConnection.getCollection("Users").find(eq("user_id", userId)).first();
 			if(doc != null) {
 				if(doc.get("password").equals(hashedPassword)) {
-					CurrentUser.setUserId(doc.getObjectId("_id"));
+					CurrentUser.setUserId(doc.get("user_id").toString());
 					System.out.println(doc);
 					errorText.setText("");
 					

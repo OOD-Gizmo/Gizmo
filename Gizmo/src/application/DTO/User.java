@@ -32,12 +32,12 @@ public abstract class User {
 		}
 	}
 	
-	private String firstName; 
-	private String lastName;
-	private String userID; 
-	private String emailID; 
-	private ContactDetails contactDetails;
-	private USER_TYPE user_TYPE; 
+	protected String firstName; 
+	protected String lastName;
+	protected String userID; 
+	protected String emailID; 
+	protected ContactDetails contactDetails;
+	protected USER_TYPE user_TYPE; 
 	
 	
 	public USER_TYPE getUser_TYPE() {

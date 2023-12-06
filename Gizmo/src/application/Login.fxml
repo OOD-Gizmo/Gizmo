@@ -36,5 +36,10 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></ToggleButton>
+      <Text fill="WHITE" layoutX="620.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G">
+         <font>
+            <Font name="System Bold" size="52.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

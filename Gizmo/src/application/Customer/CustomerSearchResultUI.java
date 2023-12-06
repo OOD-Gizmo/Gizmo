@@ -20,6 +20,7 @@ import com.mongodb.client.model.Sorts;
 import application.DBConnection;
 import application.Main;
 import application.Customer.CustomerProductUI.RedirectionFrom;
+import application.DTO.Buyer;
 import application.DTO.CurrentProduct;
 import application.DTO.CurrentUser;
 import application.DTO.Product;
@@ -58,57 +59,66 @@ public class CustomerSearchResultUI {
 	
 	private static Product.PRODUCT_INFO searchedProduct;
 	
+	private Buyer buyer;
+	
 	public Scene getScene() {
 		Scene s = null;
 		try {			
 			Parent root = FXMLLoader.load(getClass().getResource("CustomerSearchResultUI.fxml"));
+			Document doc = DBConnection.getCollection("Users").find(eq("user_id", CurrentUser.getUserId())).first();
 			
-			AggregateIterable<Document> productDocs = DBConnection.getCollection("Inventory")
-					.aggregate(Arrays.asList(
-							Aggregates.unwind("$inventory"), 
-							Aggregates.match(eq("inventory.id", searchedProduct.getId())), 
-							Aggregates.sort(Sorts.ascending("inventory.price")),
-							Aggregates.limit(10),
-							Aggregates.project(Projections.include("inventory"))));
+			if(doc == null) {
+				return s;
+			}
 			
-			productSearchText = (TextField) root.lookup("#searchTextField");
-			suggestionGridPane = (GridPane)root.lookup("#suggestionGridPane");
-			logoutBtn = (Button) root.lookup("#logoutBtn");
-			backBtn = (Button) root.lookup("#backBtn");
-			searchBtn = (Button) root.lookup("#searchBtn");
+			this.buyer = new Buyer(
+					doc.get("first_name").toString(), 
+					doc.get("last_name").toString(), 
+					CurrentUser.getUserId(), 
+					doc.get("email_id").toString(), 
+					null
+					);
+			
+			AggregateIterable<Document> productDocs = this.buyer.getSearchedProduct(searchedProduct.getId());
+			
+			this.productSearchText = (TextField) root.lookup("#searchTextField");
+			this.suggestionGridPane = (GridPane)root.lookup("#suggestionGridPane");
+			this.logoutBtn = (Button) root.lookup("#logoutBtn");
+			this.backBtn = (Button) root.lookup("#backBtn");
+			this.searchBtn = (Button) root.lookup("#searchBtn");
 			StackPane stackPane = (StackPane) root.lookup("#stackPane");
 			
 			HBox searchAlignment = new HBox();
 			searchAlignment.setAlignment(Pos.TOP_CENTER);
 					
-			sp = new ScrollPane();
+			this.sp = new ScrollPane();
 			stackPane.getChildren().add(sp);
-			sp.requestFocus();
+			this.sp.requestFocus();
 			StackPane.setMargin(sp, new Insets(50, 0, 0, 0));
 			
 			productGrid = new GridPane();
 			searchAlignment.getChildren().add(productGrid);
-			sp.setContent(searchAlignment);
-			sp.setFitToWidth(true);
+			this.sp.setContent(searchAlignment);
+			this.sp.setFitToWidth(true);
 			
-			logoutBtn.setOnAction(e -> {
+			this.logoutBtn.setOnAction(e -> {
 				Main.logout();
 			});
 			
-			searchBtn.setOnAction(e -> {
+			this.searchBtn.setOnAction(e -> {
 				CustomerMainUI.search(productSearchText, Product.PRODUCT_INFO.values());
 			});
 			
-			backBtn.setOnAction(e -> {
+			this.backBtn.setOnAction(e -> {
 				Main.setCustomerMainScene();
 			});
 			
-			allProducts = Product.PRODUCT_INFO.values();
+			this.allProducts = Product.PRODUCT_INFO.values();
 			
-			productSearchText.textProperty().addListener((obs, old, newText) -> {
+			this.productSearchText.textProperty().addListener((obs, old, newText) -> {
 				if(newText.isEmpty()) {
-					suggestionGridPane.getChildren().clear();
-					sp.toFront();
+					this.suggestionGridPane.getChildren().clear();
+					this.sp.toFront();
 				} else {
 					populateSearchSuggestion(newText);
 				}

@@ -24,6 +24,7 @@ import com.mongodb.client.result.UpdateResult;
 
 import application.DBConnection;
 import application.Main;
+import application.DTO.Buyer;
 import application.DTO.CurrentProduct;
 import application.DTO.CurrentUser;
 import application.DTO.Product;
@@ -62,7 +63,7 @@ public class CustomerProductUI {
 	private Button rateBtn4;
 	private Button rateBtn5;
 	 
-	private ObjectId sellerId;
+	private String sellerId;
 	private Product product;
 	private Product.PRODUCT_INFO[] allProducts = Product.PRODUCT_INFO.values();
 	private String sellerName;
@@ -73,39 +74,54 @@ public class CustomerProductUI {
 	private boolean isRatedBefore = false;
 	private boolean isRateSuccessful = true;
 	
+	Buyer buyer;
+	
 	public Scene getScene() {
 		Scene s = null;
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("CustomerProductUI.fxml"));
+			Document doc = DBConnection.getCollection("Users").find(eq("user_id", CurrentUser.getUserId())).first();
 			
-			backBtn = (Button) root.lookup("#backBtn");
-			productNameText = (Text) root.lookup("#productNameText");
-			productImageView = (ImageView) root.lookup("#productImageView");
-			specificationText = (Text) root.lookup("#specificationText");
-			priceText = (Text) root.lookup("#priceText");
-			ratingText = (Text) root.lookup("#ratingText");
-			leftText = (Text) root.lookup("#leftText");
-			sellerNameText = (Text) root.lookup("#sellerNameText");
-			purchaseBtn = (Button) root.lookup("#purchaseBtn");
-			rateVBox = (VBox) root.lookup("#rateVBox");
-			statusText = (Text) root.lookup("#statusText");
-			rateStatusText = (Text) root.lookup("#rateStatusText");
-			rateBtn1 = (Button) root.lookup("#rateBtn1");
-			rateBtn2 = (Button) root.lookup("#rateBtn2");
-			rateBtn3 = (Button) root.lookup("#rateBtn3");
-			rateBtn4 = (Button) root.lookup("#rateBtn4");
-			rateBtn5 = (Button) root.lookup("#rateBtn5");
+			if(doc == null) {
+				return s;
+			}
+			
+			this.buyer = new Buyer(
+					doc.get("first_name").toString(), 
+					doc.get("last_name").toString(), 
+					CurrentUser.getUserId(), 
+					doc.get("email_id").toString(), 
+					null
+					);
+			
+			this.backBtn = (Button) root.lookup("#backBtn");
+			this.productNameText = (Text) root.lookup("#productNameText");
+			this.productImageView = (ImageView) root.lookup("#productImageView");
+			this.specificationText = (Text) root.lookup("#specificationText");
+			this.priceText = (Text) root.lookup("#priceText");
+			this.ratingText = (Text) root.lookup("#ratingText");
+			this.leftText = (Text) root.lookup("#leftText");
+			this.sellerNameText = (Text) root.lookup("#sellerNameText");
+			this.purchaseBtn = (Button) root.lookup("#purchaseBtn");
+			this.rateVBox = (VBox) root.lookup("#rateVBox");
+			this.statusText = (Text) root.lookup("#statusText");
+			this.rateStatusText = (Text) root.lookup("#rateStatusText");
+			this.rateBtn1 = (Button) root.lookup("#rateBtn1");
+			this.rateBtn2 = (Button) root.lookup("#rateBtn2");
+			this.rateBtn3 = (Button) root.lookup("#rateBtn3");
+			this.rateBtn4 = (Button) root.lookup("#rateBtn4");
+			this.rateBtn5 = (Button) root.lookup("#rateBtn5");
 						
-			isPurchasedBefore = isPurchasedBeforeQuery();
-			isRatedBefore = isPurchasedBefore && isRatedBeforeQuery();
+			this.isPurchasedBefore = isPurchasedBeforeQuery();
+			this.isRatedBefore = isPurchasedBefore && isRatedBeforeQuery();
 			
 			renderProduct();
 			
-			backBtn.setOnAction(e -> {
+			this.backBtn.setOnAction(e -> {
 				back();
 			});
 			
-			purchaseBtn.setOnAction(e -> {
+			this.purchaseBtn.setOnAction(e -> {
 				purchase();
 			});
 			
@@ -127,33 +143,10 @@ public class CustomerProductUI {
 	}
 	
 	private void renderProduct() {
-		AggregateIterable<Document> productDocs = DBConnection.getCollection("Inventory")
-				.aggregate(Arrays.asList(
-						Aggregates.unwind("$inventory"), 
-						Aggregates.match(eq("inventory._id", CurrentProduct.getProductId())), 
-						Aggregates.limit(1)));
-					
-		for(Document prod : productDocs) {
-			sellerId = prod.getObjectId("sellerId");
-			Document inventory = (Document) prod.get("inventory");
-			int productId = (int) inventory.get("id");
-			int price = (int) inventory.get("price");
-			int stock = (int) inventory.get("stock");
-			double rating = (double) inventory.get("rating");
-			
-			Product.PRODUCT_INFO productInfo = null;
-			
-			for(Product.PRODUCT_INFO productInfoElem : allProducts) {
-				if(productInfoElem.getId() == productId) {
-					productInfo = productInfoElem;
-					break;
-				}
-			}
-			
-			product = new Product(productInfo, price, stock, rating);
-		}
+		product = this.buyer.getProductById(CurrentProduct.getProductId(), allProducts);
+		sellerId = product.getSellerId();
 		
-		Document sellerDoc = DBConnection.getCollection("Users").find(eq("_id", sellerId)).first();
+		Document sellerDoc = DBConnection.getCollection("Users").find(eq("user_id", sellerId)).first();
 		sellerName = sellerDoc.getString("first_name") + " " + sellerDoc.getString("last_name");
 		
 		productNameText.setText(product.getProductInfo().getName());

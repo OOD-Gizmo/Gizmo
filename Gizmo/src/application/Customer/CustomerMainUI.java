@@ -16,9 +16,11 @@ import com.mongodb.client.model.Aggregates;
 import application.DBConnection;
 import application.Main;
 import application.Customer.CustomerProductUI.RedirectionFrom;
+import application.DTO.Buyer;
 import application.DTO.CurrentProduct;
 import application.DTO.CurrentUser;
 import application.DTO.Product;
+import application.DTO.Seller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -63,27 +65,41 @@ public class CustomerMainUI {
 	private static final int GRID_ROW = 2;
 	private static final int GRID_COLUMN = 4;
 	
+	private Buyer buyer;
+	
 	public Scene getScene() {
 		Scene s = null;
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("CustomerMainUI.fxml"));
-			Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
+			Document doc = DBConnection.getCollection("Users").find(eq("user_id", CurrentUser.getUserId())).first();
 			
-			productGrid = (GridPane) root.lookup("#productGrid");
+			if(doc == null) {
+				return s;
+			}
+			
+			this.buyer = new Buyer(
+					doc.get("first_name").toString(), 
+					doc.get("last_name").toString(), 
+					CurrentUser.getUserId(), 
+					doc.get("email_id").toString(), 
+					null
+					);
+			
+			this.productGrid = (GridPane) root.lookup("#productGrid");
 			productSearchText = (TextField) root.lookup("#searchTextField");
-			suggestionGridPane = (GridPane)root.lookup("#suggestionGridPane");
-			logoutBtn = (Button) root.lookup("#logoutBtn");
-			searchBtn = (Button) root.lookup("#searchBtn");
+			this.suggestionGridPane = (GridPane)root.lookup("#suggestionGridPane");
+			this.logoutBtn = (Button) root.lookup("#logoutBtn");
+			this.searchBtn = (Button) root.lookup("#searchBtn");
 			
-			productGrid.toFront();
+			this.productGrid.toFront();
 			
 			allProducts = Product.PRODUCT_INFO.values();
 			
-			logoutBtn.setOnAction(e -> {
+			this.logoutBtn.setOnAction(e -> {
 				Main.logout();
 			});
 			
-			searchBtn.setOnAction(e -> {
+			this.searchBtn.setOnAction(e -> {
 				search(productSearchText, allProducts);
 			});
 						
@@ -97,8 +113,7 @@ public class CustomerMainUI {
 			});
 			
 									
-			AggregateIterable<Document> inventoryDocs = DBConnection.getCollection("Inventory").aggregate(Arrays.asList(Aggregates.match(gt("inventory.stock", 0)), Aggregates.sample(8)));
-
+			AggregateIterable<Document> inventoryDocs = this.buyer.getMainPageInventory();
 			for(Document inv : inventoryDocs) {
 				ArrayList<ProductCard> pCards = getProductCards(inv);
 				allProductCards.addAll(pCards);
@@ -114,11 +129,6 @@ public class CustomerMainUI {
 						break;
 					}
 				}
-			}
-			
-			
-			if(doc == null) {
-				return s;
 			}
 			
 			s = new Scene(root,1280,720);
