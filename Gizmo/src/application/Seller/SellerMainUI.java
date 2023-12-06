@@ -64,6 +64,7 @@ public class SellerMainUI {
 	private VBox productVBox;
 	private Button logoutBtn;
 	private ScrollPane sp;
+	private Text errorText;
 	
 	public Scene getScene() {
 		Scene s = null;
@@ -80,6 +81,7 @@ public class SellerMainUI {
 			stockTextField = (TextField) root.lookup("#stockTextField");
 			priceTextField = (TextField) root.lookup("#priceTextField");
 			logoutBtn = (Button) root.lookup("#logoutBtn");
+			errorText = (Text) root.lookup("#errorText");
 
 			
 			VBox currentProductVBox = (VBox) root.lookup("#currentProductVBox");
@@ -211,34 +213,34 @@ public class SellerMainUI {
 			String priceString = priceTextField.getText();
 			
 			if(productName == null) {
-				// error
-				System.out.print("A product needs to be selected");
+				errorText.setText("Please select a product");
+				errorText.setFill(Color.RED);
 				return;
 			}
 			
 			if(!stockString.matches("\\d+")) {
-				// error
-				System.out.print("Enter a valid number for stock");
+				errorText.setText("Invalid stock amount");
+				errorText.setFill(Color.RED);
 				return;
 			}
 			
 			int stock = Integer.parseInt(stockString);
 			if(stock == 0) {
-				// error
-				System.out.print("Stock quantity cannot be 0");
+				errorText.setText("Stock cannot be 0");
+				errorText.setFill(Color.RED);
 				return;
 			}
 			
 			if(!priceString.matches("\\d+")) {
-				// error
-				System.out.print("Enter a valid number for price");
+				errorText.setText("Invalid price");
+				errorText.setFill(Color.RED);
 				return;
 			}
 			
 			int price = Integer.parseInt(priceString);
 			if(price == 0) {
-				// error
-				System.out.print("price cannot be 0$");
+				errorText.setText("Price cannot be 0$");
+				errorText.setFill(Color.RED);
 				return;
 			}
 			
@@ -252,11 +254,10 @@ public class SellerMainUI {
 			
 			
 			if(product == null) {
-				// error - should not have happened
-				System.out.print("product not found");
+				errorText.setText("Selected product not found");
+				errorText.setFill(Color.RED);
 				return;
 			}
-			
 			
 			Document inventoryDoc = DBConnection.getCollection("Inventory").find(eq("sellerId", CurrentUser.getUserId())).first();
 			if(inventoryDoc != null) {
@@ -310,6 +311,9 @@ public class SellerMainUI {
                         .append("inventory", Arrays.asList(productJson)));
 				System.out.println("Success! Inserted document id: " + result.getInsertedId());
 			}		
+			
+			errorText.setText("Product is created!");
+			errorText.setFill(Color.GREEN);
 			
 			renderProducts();
 		}

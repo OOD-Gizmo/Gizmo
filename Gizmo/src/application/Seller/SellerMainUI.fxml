@@ -101,7 +101,7 @@
                         </Button>
                         <Text id="errorText" fill="#9e2a2a" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="221.21630859375">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="14.0" />
                            </font>
                         </Text>
                      </children>
