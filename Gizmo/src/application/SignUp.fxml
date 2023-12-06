@@ -51,5 +51,10 @@
       <HBox layoutX="505.0" layoutY="506.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
       <HBox layoutX="505.0" layoutY="546.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
       <HBox layoutX="505.0" layoutY="584.0" prefHeight="2.0" prefWidth="274.0" style="-fx-background-color: black;" />
+      <Text fill="WHITE" layoutX="611.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G">
+         <font>
+            <Font name="System Bold" size="52.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

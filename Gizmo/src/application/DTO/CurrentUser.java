@@ -1,18 +1,16 @@
 package application.DTO;
 
-import org.bson.types.ObjectId;
-
 public final class CurrentUser {
 	
-	private static ObjectId userId;
+	private static String userId;
 	
 	private CurrentUser(){}
 	
-	public static void setUserId(ObjectId id) {
+	public static void setUserId(String id) {
 		userId = id;
 	}
 	
-	public static ObjectId getUserId() {
+	public static String getUserId() {
 		return userId;
 	}
 }

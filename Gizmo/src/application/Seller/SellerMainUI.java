@@ -2,6 +2,7 @@ package application.Seller;
 
 import static com.mongodb.client.model.Filters.eq;
 
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -66,37 +67,47 @@ public class SellerMainUI {
 	private ScrollPane sp;
 	private Text errorText;
 	
+	private Seller seller;
+	
 	public Scene getScene() {
 		Scene s = null;
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("SellerMainUI.fxml"));
-			Document doc = DBConnection.getCollection("Users").find(eq("_id", CurrentUser.getUserId())).first();
+			Document doc = DBConnection.getCollection("Users").find(eq("user_id", CurrentUser.getUserId())).first();
 			
 			if(doc == null) {
 				return s;
 			}
+			
+			this.seller = new Seller(
+					doc.get("first_name").toString(), 
+					doc.get("last_name").toString(), 
+					CurrentUser.getUserId(), 
+					doc.get("email_id").toString(), 
+					null
+					);
 						
 			Button addBtn = (Button) root.lookup("#addBtn");
-			productComboBox = (ComboBox<String>) root.lookup("#productComboBox");
-			stockTextField = (TextField) root.lookup("#stockTextField");
-			priceTextField = (TextField) root.lookup("#priceTextField");
-			logoutBtn = (Button) root.lookup("#logoutBtn");
-			errorText = (Text) root.lookup("#errorText");
+			this.productComboBox = (ComboBox<String>) root.lookup("#productComboBox");
+			this.stockTextField = (TextField) root.lookup("#stockTextField");
+			this.priceTextField = (TextField) root.lookup("#priceTextField");
+			this.logoutBtn = (Button) root.lookup("#logoutBtn");
+			this.errorText = (Text) root.lookup("#errorText");
 
 			
 			VBox currentProductVBox = (VBox) root.lookup("#currentProductVBox");
-			sp = new ScrollPane();
+			this.sp = new ScrollPane();
 			currentProductVBox.getChildren().add(sp);
-			productVBox = new VBox(25);
-			sp.setContent(productVBox);
-			sp.minWidthProperty().bind(productVBox.widthProperty().add(20));
-			sp.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-			sp.setBackground(Background.fill(Paint.valueOf("#FFFFFF")));
-			sp.getStyleClass().add("scroll-pane");
-			productVBox.setBackground(Background.fill(Paint.valueOf("#FFFFFF")));
+			this.productVBox = new VBox(25);
+			this.sp.setContent(productVBox);
+			this.sp.minWidthProperty().bind(this.productVBox.widthProperty().add(20));
+			this.sp.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			this.sp.setBackground(Background.fill(Paint.valueOf("#FFFFFF")));
+			this.sp.getStyleClass().add("scroll-pane");
+			this.productVBox.setBackground(Background.fill(Paint.valueOf("#FFFFFF")));
 			
 			
-			sp.setVisible(false);
+			this.sp.setVisible(false);
 						
 			allProducts = Product.PRODUCT_INFO.values();
 			String[] allProductNames = new String[allProducts.length];
@@ -174,11 +185,11 @@ public class SellerMainUI {
 		if(inventoryDoc == null) {
 			return;
 		}
-		productVBox.getChildren().clear();
+		this.productVBox.getChildren().clear();
 		List<Document> inventoryList = inventoryDoc.getList("inventory", Document.class);
 		
 		if(inventoryList.size() > 0) {
-			sp.setVisible(true);
+			this.sp.setVisible(true);
 		}
 		
 		for(int i = 0; i < inventoryList.size(); i++) {
@@ -202,7 +213,7 @@ public class SellerMainUI {
 			int sold = (int)inventoryList.get(i).get("sold");
 			
 			HBox productBox = getProduct(productInfo, price, rating, stock, sold);
-			productVBox.getChildren().add(productBox);
+			this.productVBox.getChildren().add(productBox);
 		}
 	}
 	
@@ -259,58 +270,7 @@ public class SellerMainUI {
 				return;
 			}
 			
-			Document inventoryDoc = DBConnection.getCollection("Inventory").find(eq("sellerId", CurrentUser.getUserId())).first();
-			if(inventoryDoc != null) {
-				
-				List<Document> inventoryList = inventoryDoc.getList("inventory", Document.class);
-				boolean productFound = false;
-				for(int i = 0; i < inventoryList.size(); i++) {
-					if((int)inventoryList.get(i).get("id") == product.getProductInfo().getId() && (int)inventoryList.get(i).get("price") == product.getPrice()) {
-						productFound = true;
-						
-						Bson filter = and(eq("sellerId", CurrentUser.getUserId()), and(eq("inventory.id", product.getProductInfo().getId()), eq("inventory.price", product.getPrice())));
-						Bson update = Updates.inc("inventory.$.stock", product.getStock());
-						
-						UpdateResult result = DBConnection.getCollection("Inventory").updateOne(filter, update);
-						System.out.print("Stock updated : " + result);
-						
-						break;
-					}
-				}
-				
-				if(!productFound) {
-					
-					JSONObject productJson = new JSONObject(); 
-					productJson.put("_id", new ObjectId());
-					productJson.put("id", product.getProductInfo().getId());
-					productJson.put("stock", product.getStock());
-					productJson.put("price", product.getPrice());
-					productJson.put("sold", 0);
-					productJson.put("rating", product.getRating());
-					productJson.put("ratingList", Arrays.asList());
-					
-					Bson filter = and(eq("sellerId", CurrentUser.getUserId()));
-					Bson update = Updates.push("inventory", productJson);
-					UpdateResult result = DBConnection.getCollection("Inventory").updateOne(filter, update);
-					System.out.print("Inventory updated : " + result);					
-				}
-				
-			} else {
-				JSONObject productJson = new JSONObject(); 
-				productJson.put("_id", new ObjectId());
-				productJson.put("id", product.getProductInfo().getId());
-				productJson.put("stock", product.getStock());
-				productJson.put("price", product.getPrice());
-				productJson.put("sold", 0);
-				productJson.put("rating", product.getRating());
-				productJson.put("ratingList", Arrays.asList());
-				
-				InsertOneResult result = DBConnection.getCollection("Inventory").insertOne(new Document()
-                        .append("_id", new ObjectId())
-                        .append("sellerId", CurrentUser.getUserId())
-                        .append("inventory", Arrays.asList(productJson)));
-				System.out.println("Success! Inserted document id: " + result.getInsertedId());
-			}		
+			seller.addProduct(product);
 			
 			errorText.setText("Product is created!");
 			errorText.setFill(Color.GREEN);
