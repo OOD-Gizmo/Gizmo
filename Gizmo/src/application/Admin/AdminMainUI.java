@@ -63,28 +63,28 @@ public class AdminMainUI {
     }
 	
 	private void removeCustomer(String id) {
-		ObjectId userObjectId = DBConnection.getCollection("Users").find(eq("user_id", id)).first().getObjectId("_id");
+		String userId = (String)DBConnection.getCollection("Users").find(eq("user_id", id)).first().get("user_id");
 
-		if(userObjectId == null) {
+		if(userId == null) {
 			return;
 		}
 		
-		DeleteResult result = DBConnection.getCollection("Users").deleteOne(and(eq("_id", userObjectId), eq("type", USER_TYPE.BUYER.getTypeInt())));
+		DeleteResult result = DBConnection.getCollection("Users").deleteOne(and(eq("user_id", userId), eq("type", USER_TYPE.BUYER.getTypeInt())));
 		if(result.getDeletedCount() > 0) {
-			result = DBConnection.getCollection("Purchases").deleteOne(eq("customerId", userObjectId));
+			result = DBConnection.getCollection("Purchases").deleteOne(eq("customerId", userId));
 		}
 	}
 	
 	private void removeSeller(String id) {
-		ObjectId userObjectId = DBConnection.getCollection("Users").find(eq("user_id", id)).first().getObjectId("_id");
+		String userId = (String) DBConnection.getCollection("Users").find(eq("user_id", id)).first().get("user_id");
 
-		if(userObjectId == null) {
+		if(userId == null) {
 			return;
 		}
 		
-		DeleteResult result = DBConnection.getCollection("Users").deleteOne(and(eq("_id", userObjectId), eq("type", USER_TYPE.SELLER.getTypeInt())));
+		DeleteResult result = DBConnection.getCollection("Users").deleteOne(and(eq("user_id", userId), eq("type", USER_TYPE.SELLER.getTypeInt())));
 		if(result.getDeletedCount() > 0) {
-			result = DBConnection.getCollection("Inventory").deleteOne(eq("sellerId", userObjectId));
+			result = DBConnection.getCollection("Inventory").deleteOne(eq("sellerId", userId));
 		}
 	}
 	

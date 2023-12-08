@@ -45,14 +45,12 @@ public class SignUp {
 		Scene scene = null;		
 		try {
 			Parent rootParent = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
-//			if(doc == null)
-//				return scene;
 		
 			this.backToSignInButton = (ToggleButton) rootParent.lookup("#backToSignInButton");
 			this.signupBtn = (ToggleButton) rootParent.lookup("#signupBtn");
 
 			this.firstNameText = (TextField) rootParent.lookup("#firstNameText");
-			this.lastNameText = (TextField) rootParent.lookup("#firstNameText");
+			this.lastNameText = (TextField) rootParent.lookup("#lastNameText");
 			this.emailText = (TextField) rootParent.lookup("#emailText");
 			this.userText = (TextField) rootParent.lookup("#userText");
 			this.emailText = (TextField) rootParent.lookup("#emailText");
@@ -65,7 +63,6 @@ public class SignUp {
 			this.signupBtn.setOnAction(new SignUpHandler());
 			this.backToSignInButton.setOnAction(new BackToHomeBtnHAndler());
 			this.userType.getItems().addAll(
-					"Admin",
 					"Buyer",
 					"Seller"
 					);
@@ -73,7 +70,6 @@ public class SignUp {
 			scene = new Scene(rootParent, 1280, 720);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return scene;
