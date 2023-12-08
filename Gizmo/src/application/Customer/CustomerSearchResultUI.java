@@ -137,16 +137,15 @@ public class CustomerSearchResultUI {
 	
 	private void populateSearchSuggestion(String searchStr) {
 		
-		Pattern pattern = Pattern.compile(searchStr, Pattern.CASE_INSENSITIVE);
-		
 		ArrayList<String> suggestionList = new ArrayList<>();
 		
 		for(Product.PRODUCT_INFO prod : allProducts) {
-			Matcher matcher = pattern.matcher(prod.getName());
-			if(matcher.find()) {
+			if(prod.getName().toLowerCase().contains(searchStr.toLowerCase())) {
 				suggestionList.add(prod.getName());
 			}
 		}
+		
+		suggestionGridPane.getChildren().clear();
 		
 		if(suggestionList.size() > 0) {
 			sp.toBack();
@@ -158,7 +157,6 @@ public class CustomerSearchResultUI {
 			}	
 		} else {
 			sp.toFront();
-			suggestionGridPane.getChildren().clear();
 		}
 	}
 	
