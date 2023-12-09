@@ -67,7 +67,6 @@ public class AdminMainUI {
 			
 			s = new Scene(root, 1280, 720);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         

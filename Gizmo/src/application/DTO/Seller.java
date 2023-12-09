@@ -59,7 +59,7 @@ public class Seller extends User {
 				Bson filter = and(eq("sellerId", this.userID));
 				Bson update = Updates.push("inventory", productJson);
 				UpdateResult result = DBConnection.getCollection("Inventory").updateOne(filter, update);
-				System.out.print("Inventory updated : " + result);					
+				System.out.print("Inventory updated : " + result);			
 			}
 			
 		} else {
