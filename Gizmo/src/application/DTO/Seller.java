@@ -24,6 +24,7 @@ public class Seller extends User {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void addProduct(Product product) {
 		Document inventoryDoc = DBConnection.getCollection("Inventory").find(eq("sellerId", this.userID)).first();
 		if(inventoryDoc != null) {
