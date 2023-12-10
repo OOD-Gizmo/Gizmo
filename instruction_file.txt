@@ -12,4 +12,6 @@ Step 4: Project -> Properties -> Java Build Path -> Libraries -> Modulepath -> A
 
 Step 5: Project -> Run As -> Run Configurations -> Dependencies -> Classpath Entries -> Add above 4 as External JARs again
 
-Step 6: Run
+Step 6: Project -> Properties -> Java Build Path -> Order and Export -> Select Gizmo/Images along with Gizmo/src
+
+Step 7: Run
