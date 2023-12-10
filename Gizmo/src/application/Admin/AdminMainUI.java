@@ -2,13 +2,12 @@ package application.Admin;
 
 import java.io.IOException;
 
-import org.bson.types.ObjectId;
-
-import com.mongodb.client.result.DeleteResult;
+import org.bson.Document;
 
 import application.DBConnection;
 import application.Main;
-import application.DTO.User.USER_TYPE;
+import application.DTO.Admin;
+import application.DTO.CurrentUser;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.and;
 
 public class AdminMainUI {
 	
@@ -26,11 +24,26 @@ public class AdminMainUI {
 	private Button removeCustomerBtn;
 	private Button removeSellerBtn;
 	
+	private Admin admin;
+	
 	public Scene getScene() {
         Parent root;
         Scene s = null;
 		try {
 			root = FXMLLoader.load(getClass().getResource("AdminMainUI.fxml"));
+			Document doc = DBConnection.getCollection("Users").find(eq("user_id", CurrentUser.getUserId())).first();
+
+			if(doc == null) {
+				return s;
+			}
+			
+			this.admin = new Admin(
+					doc.get("first_name").toString(), 
+					doc.get("last_name").toString(), 
+					CurrentUser.getUserId(), 
+					doc.get("email_id").toString(), 
+					null
+			);
 			
 			logoutBtn = (Button) root.lookup("#logoutBtn");
 			customerIdTextField = (TextField) root.lookup("#customerIdTextField");
@@ -43,50 +56,20 @@ public class AdminMainUI {
 			});
 			
 			removeCustomerBtn.setOnAction(e -> {
-				removeCustomer(customerIdTextField.getText());
+				this.admin.removeCustomer(customerIdTextField.getText());
 			});
 			
 			removeSellerBtn.setOnAction(e -> {
-				removeSeller(sellerIdTextField.getText());
+				this.admin.removeSeller(sellerIdTextField.getText());
 			});
 			
 			
 			
 			s = new Scene(root, 1280, 720);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
         return s;
-      
     }
-	
-	private void removeCustomer(String id) {
-		String userId = (String)DBConnection.getCollection("Users").find(eq("user_id", id)).first().get("user_id");
-
-		if(userId == null) {
-			return;
-		}
-		
-		DeleteResult result = DBConnection.getCollection("Users").deleteOne(and(eq("user_id", userId), eq("type", USER_TYPE.BUYER.getTypeInt())));
-		if(result.getDeletedCount() > 0) {
-			result = DBConnection.getCollection("Purchases").deleteOne(eq("customerId", userId));
-		}
-	}
-	
-	private void removeSeller(String id) {
-		String userId = (String) DBConnection.getCollection("Users").find(eq("user_id", id)).first().get("user_id");
-
-		if(userId == null) {
-			return;
-		}
-		
-		DeleteResult result = DBConnection.getCollection("Users").deleteOne(and(eq("user_id", userId), eq("type", USER_TYPE.SELLER.getTypeInt())));
-		if(result.getDeletedCount() > 0) {
-			result = DBConnection.getCollection("Inventory").deleteOne(eq("sellerId", userId));
-		}
-	}
-	
-
 }

@@ -10,7 +10,7 @@ import org.bson.types.ObjectId;
 import com.mongodb.MongoWriteException;
 import com.mongodb.client.result.InsertOneResult;
 
-import application.DTO.AdminUser;
+import application.DTO.Admin;
 import application.DTO.AuthHandler;
 import application.DTO.Seller;
 import application.DTO.Buyer;
@@ -115,7 +115,7 @@ public class SignUp {
 			// depending upon user Create the user type variable
 			User newUser = null;
 			if(userType.getValue() == "Admin") {
-				newUser = (AdminUser) new AdminUser(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
+				newUser = (Admin) new Admin(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}else if(userType.getValue() == "Seller") {
 				newUser = (Seller) new Seller(firstNameText.getText().toString(), lastNameText.getText().toString(), userText.getText(), emailText.getText().toString(), null);
 			}else {

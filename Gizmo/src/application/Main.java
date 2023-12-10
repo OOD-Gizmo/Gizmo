@@ -48,11 +48,6 @@ public class Main extends Application {
 			
 			mainstage = primaryStage;
 			
-			sellerMainUI = new SellerMainUI();
-			customerMainUI = new CustomerMainUI();
-			customerSearchResultUI = new CustomerSearchResultUI();
-			customerProductUI = new CustomerProductUI();
-			
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			
 			DBConnection.initClient();
@@ -71,11 +66,6 @@ public class Main extends Application {
 			
 			
 			primaryStage.setScene(mainScene);
-//			CurrentUser.setUserId(new ObjectId("65537af362d1923857f60468")); //for testing a scene directly
-//			CustomerSearchResultUI.setSearchedProduct(Product.PRODUCT_INFO.IPHONE12);
-//			CurrentProduct.setProduct(new ObjectId("6565330bd48aba50fa520eb7"));
-//			setScene(customerMainUI.getScene());
-			
 			
 			primaryStage.show();		
 			primaryStage.setResizable(false);
@@ -125,10 +115,7 @@ public class Main extends Application {
 						
 						default:
 							break;
-					}
-					
-//					stage.setScene(sellerMainUI.getScene()); TODO: Add user type check					
-					
+					}					
 				} else {
 					System.out.println("Incorrect Password");
 					errorText.setText("The password is incorrect");
@@ -141,14 +128,10 @@ public class Main extends Application {
 	}
 	
 	class RedirectToSignup implements EventHandler<ActionEvent>{
-		public void handle(ActionEvent evento) {
+		public void handle(ActionEvent event) {
 			Scene scene = (new SignUp()).getScene();
 			mainstage.setScene(scene);
 		}
-	}
-	
-	public static void setScene(Scene scene) {
-		mainstage.setScene(scene);
 	}
 	
 	public static void setAdminMainScene() {
